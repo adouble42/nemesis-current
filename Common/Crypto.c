@@ -91,13 +91,13 @@ static EncryptionAlgorithm EncryptionAlgorithms[] =
 	{ { AES,					0 }, { XTS, 0 },	1 },
 	{ { SERPENT,				0 }, { XTS, 0 },	1 },
 	{ { TWOFISH,				0 }, { XTS, 0 },	1 },
-	{ { CAMELLIA,				0 }, { XTS, 0 },	1 },
+//	{ { CAMELLIA,				0 }, { XTS, 0 },	1 },
 	{ { TWOFISH, AES,			0 }, { XTS, 0 },	1 },
 	{ { SERPENT, TWOFISH, AES,	0 }, { XTS, 0 },	1 },
 	{ { AES, SERPENT,			0 }, { XTS, 0 },	1 },
 	{ { AES, TWOFISH, SERPENT,	0 }, { XTS, 0 },	1 },
 	{ { SERPENT, TWOFISH,		0 }, { XTS, 0 },	1 },
-	{ { SERPENT, TWOFISH, CAMELLIA,	0 }, { XTS, 0 },	1 },
+//	{ { SERPENT, TWOFISH, CAMELLIA,	0 }, { XTS, 0 },	1 },
 
 	{ { 0,						0 }, { 0, 0 },		0 },	// Must be all-zero
 
@@ -1812,9 +1812,11 @@ int EAInit (int ea, unsigned char *key, unsigned __int8 *ks)
 		return ERR_CIPHER_INIT_FAILURE;
 
 #elif defined (TC_WINDOWS_BOOT_SERPENT)
-	serpent_set_key (key, 32 * 8, ks);
+	serpent_set_key (key, 32 * 8, ks); // fixme
 #elif defined (TC_WINDOWS_BOOT_TWOFISH)
 	twofish_set_key ((TwofishInstance *)ks, (const u4byte *)key, 32 * 8);
+#elif defined (TC_WINDOWS_BOOT_CAMELLIA)
+	camellia_set_key (key, ks);
 #endif
 	return ERR_SUCCESS;
 }

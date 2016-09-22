@@ -861,7 +861,6 @@ namespace TrueCrypt
 						options->Size = VolumeSize;
 						options->Type = OuterVolume ? VolumeType::Normal : SelectedVolumeType;
 						options->VolumeHeaderKdf = Pkcs5Kdf::GetAlgorithm (*SelectedHash);
-
 						Creator.reset (new VolumeCreator);
 						Creator->CreateVolume (options);
 
