@@ -860,7 +860,7 @@ namespace TrueCrypt
 
 				wxLog::FlushActive();
 				Application::SetExitCode (1);
-				Gui->ShowInfo (_("TrueCrypt is already running."));
+				Gui->ShowInfo (_("nemesis is already running."));
 				return false;
 			}
 
@@ -1012,47 +1012,8 @@ namespace TrueCrypt
 
 	wxString GraphicUserInterface::GetHomepageLinkURL (const wxString &linkId, bool secure, const wxString &extraVars) const
 	{
-		wxString url = wxString (StringConverter::ToWide (secure ? TC_APPLINK_SECURE : TC_APPLINK)) + L"&dest=" + linkId;
+		wxString url = wxString (StringConverter::ToWide (secure ? TC_APPLINK_SECURE : TC_APPLINK));
 		wxString os, osVersion, architecture;
-
-#ifdef TC_WINDOWS
-
-		os = L"Windows";
-
-#elif defined (TC_UNIX)
-		struct utsname unameData;
-		if (uname (&unameData) != -1)
-		{
-			os = StringConverter::ToWide (unameData.sysname);
-			osVersion = StringConverter::ToWide (unameData.release);
-			architecture = StringConverter::ToWide (unameData.machine);
-
-			if (os == L"Darwin")
-				os = L"MacOSX";
-		}
-		else
-			os = L"Unknown";
-#else
-		os = L"Unknown";
-#endif
-
-		os.Replace (L" ", L"-");
-		url += L"&os=";
-		url += os;
-
-		osVersion.Replace (L" ", L"-");
-		url += L"&osver=";
-		url += osVersion;
-
-		architecture.Replace (L" ", L"-");
-		url += L"&arch=";
-		url += architecture;
-
-		if (!extraVars.empty())
-		{
-			 url += L"&";
-			 url += extraVars;
-		}
 
 		return url;
 	}
@@ -1079,13 +1040,13 @@ namespace TrueCrypt
 			wxString docPath = wstring (Application::GetExecutableDirectory());
 
 #ifdef TC_RESOURCE_DIR
-			docPath = StringConverter::ToWide (string (TC_TO_STRING (TC_RESOURCE_DIR)) + "/doc/TrueCrypt User Guide.pdf");
+			docPath = StringConverter::ToWide (string (TC_TO_STRING (TC_RESOURCE_DIR)) + "/doc/nemesis User Guide.pdf");
 #elif defined (TC_WINDOWS)
-			docPath += L"\\TrueCrypt User Guide.pdf";
+			docPath += L"\\nemesis User Guide.pdf";
 #elif defined (TC_MACOSX)
-			docPath += L"/../Resources/TrueCrypt User Guide.pdf";
+			docPath += L"/../Resources/nemesis User Guide.pdf";
 #elif defined (TC_UNIX)
-			docPath = L"/usr/share/truecrypt/doc/TrueCrypt User Guide.pdf";
+			docPath = L"/usr/share/nemesis/doc/nemesis User Guide.pdf";
 #else
 #	error TC_RESOURCE_DIR undefined
 #endif

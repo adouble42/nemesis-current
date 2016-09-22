@@ -870,7 +870,7 @@ BOOL CALLBACK AboutDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam
 			LocalizeDialog (hwndDlg, "IDD_ABOUT_DLG");
 
 			// Hyperlink
-			SetWindowText (GetDlgItem (hwndDlg, IDC_HOMEPAGE), "www.truecrypt.org");
+			SetWindowText (GetDlgItem (hwndDlg, IDC_HOMEPAGE), "www.github.com/adouble42/nemesis-current");
 			ToHyperlink (hwndDlg, IDC_HOMEPAGE);
 
 			// Logo area background (must not keep aspect ratio; must retain Windows-imposed distortion)
@@ -890,7 +890,7 @@ BOOL CALLBACK AboutDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam
 
 			// Version
 			SendMessage (GetDlgItem (hwndDlg, IDT_ABOUT_VERSION), WM_SETFONT, (WPARAM) hUserBoldFont, 0);
-			sprintf (szTmp, "TrueCrypt %s", VERSION_STRING);
+			sprintf (szTmp, "nemesis %s", VERSION_STRING);
 #if (defined(_DEBUG) || defined(DEBUG))
 			strcat (szTmp, "  (debug)");
 #endif
@@ -1822,27 +1822,7 @@ void ExceptionHandlerThread (void *threadArg)
 	else
 		lpack[0] = 0;
 
-	sprintf (url, TC_APPLINK_SECURE "&dest=err-report%s&os=%s&osver=%d.%d.%d&arch=%s&cpus=%d&app=%s&cksum=%x&dlg=%s&err=%x&addr=%x"
-		, lpack
-		, GetWindowsEdition().c_str()
-		, CurrentOSMajor
-		, CurrentOSMinor
-		, CurrentOSServicePack
-		, Is64BitOs () ? "x64" : "x86"
-		, si.dwNumberOfProcessors
-#ifdef TCMOUNT
-		,"main"
-#endif
-#ifdef VOLFORMAT
-		,"format"
-#endif
-#ifdef SETUP
-		,"setup"
-#endif
-		, crc
-		, LastDialogId ? LastDialogId : "-"
-		, exCode
-		, addr);
+	sprintf (url, TC_APPLINK_SECURE);
 
 	string urlStr = url + callStack.str();
 
