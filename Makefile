@@ -27,7 +27,7 @@
 export APPNAME := nemesis
 export BASE_DIR := $(CURDIR)
 export BUILD_INC := $(BASE_DIR)/Build/Include
-
+export NOTEST := 1
 export AR ?= ar
 export CC ?= gcc
 export CXX ?= g++
