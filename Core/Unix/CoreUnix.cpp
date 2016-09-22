@@ -355,7 +355,7 @@ namespace TrueCrypt
 
 		if (readOnly)
 			options = "-oro";
-
+		
 		if (!systemMountOptions.empty())
 		{
 			if (options.empty())
@@ -365,14 +365,13 @@ namespace TrueCrypt
 
 			options += systemMountOptions;
 		}
-
+		printf("debug: %s %s \n", options.c_str(), filesystemType.c_str());
 		if (!options.empty())
 			args.push_back (options);
 
 		args.push_back ("--");
 		args.push_back (devicePath);
 		args.push_back (mountPoint);
-
 		Process::Execute ("mount", args);
 	}
 

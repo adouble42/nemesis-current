@@ -16,7 +16,7 @@ namespace TrueCrypt
 		: VolumeFormatOptionsWizardPageBase (parent)
 	{
 		InfoStaticText->SetLabel (_(
-			"In order to enable your operating system to mount your new volume, it has to be formatted with a filesystem. Please select a filesystem type.\n\nIf your volume is going to be hosted on a device or partition, you can use 'Quick format' to skip encryption of free space of the volume."));
+			"In order to enable your operating system to mount your new volume, it has to be formatted with a filesystem. Please select a filesystem type.\n\nFreeBSD: ext3 is preferred. May need to load ext2fs module for support (kldload ext2fs)."));
 
 		if (!disableNoneFilesystem)
 			FilesystemTypeChoice->Append (LangString["NONE"],	(void *) VolumeCreationOptions::FilesystemType::None);
@@ -33,7 +33,11 @@ namespace TrueCrypt
 #elif defined (TC_MACOSX)
 		FilesystemTypeChoice->Append (L"Mac OS Extended",	(void *) VolumeCreationOptions::FilesystemType::MacOsExt);
 #elif defined (TC_FREEBSD) || defined (TC_SOLARIS)
-		FilesystemTypeChoice->Append (L"UFS",				(void *) VolumeCreationOptions::FilesystemType::UFS);
+//		FilesystemTypeChoice->Append (L"UFS",				(void *) VolumeCreationOptions::FilesystemType::UFS);
+//		FilesystemTypeChoice->Append (L"Linux Ext2",		(void *) VolumeCreationOptions::FilesystemType::Ext2);
+		FilesystemTypeChoice->Append (L"Linux Ext3",		(void *) VolumeCreationOptions::FilesystemType::Ext3);
+//		FilesystemTypeChoice->Append (L"Linux Ext4",		(void *) VolumeCreationOptions::FilesystemType::Ext4);
+//		FilesystemTypeChoice->Append (L"NTFS",				(void *) VolumeCreationOptions::FilesystemType::NTFS);
 #endif
 
 		if (!disable32bitFilesystems && volumeSize <= TC_MAX_FAT_SECTOR_COUNT * sectorSize)

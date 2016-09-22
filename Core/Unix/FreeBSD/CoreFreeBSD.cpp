@@ -183,15 +183,16 @@ namespace TrueCrypt
 	{
 		try
 		{
-			// Try to mount FAT by default as mount is unable to probe filesystem type on BSD
-			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? "msdos" : filesystemType, readOnly, systemMountOptions);
+			// Try to mount ext3/ext2 by default as mount is unable to probe filesystem type on BSD
+			// UFS doesn't work, FAT is deprecated. this will allow mounting ext3 format via the ext2fs kmod
+			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? "ext2fs" : filesystemType, readOnly, systemMountOptions);
 		}
 		catch (ExecutedProcessFailed&)
 		{
 			if (!filesystemType.empty())
 				throw;
-
-			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType, readOnly, systemMountOptions);
+			// maybe we have a container here so try FAT before failing
+			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? "msdos" : filesystemType, readOnly, systemMountOptions);
 		}
 	}
 
