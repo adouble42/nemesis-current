@@ -69,9 +69,10 @@ static EncryptionAlgorithm EncryptionAlgorithms[] =
 	{ { AES,					0 }, { XTS, LRW, CBC, 0 },			1 },
 	{ { SERPENT,				0 }, { XTS, LRW, CBC, 0 },			1 },
 	{ { TWOFISH,				0 }, { XTS, LRW, CBC, 0 },			1 },
-	{ { CAMELLIA,					0 }, { XTS, 0 },	1, 1 },
+	{ { CAMELLIA,					0 }, { XTS, 0,0,0 },	1 },
 	{ { TWOFISH, AES,			0 }, { XTS, LRW, OUTER_CBC, 0 },	1 },
 	{ { SERPENT, TWOFISH, AES,	0 }, { XTS, LRW, OUTER_CBC, 0 },	1 },
+	{ { SERPENT, TWOFISH, CAMELLIA,	0 }, { XTS, 0, 0, 0 },	1 },
 
 	{ { AES, SERPENT,			0 }, { XTS, LRW, OUTER_CBC, 0 },	1 },
 	{ { AES, TWOFISH, SERPENT,	0 }, { XTS, LRW, OUTER_CBC, 0 },	1 },
@@ -90,12 +91,13 @@ static EncryptionAlgorithm EncryptionAlgorithms[] =
 	{ { AES,					0 }, { XTS, 0 },	1 },
 	{ { SERPENT,				0 }, { XTS, 0 },	1 },
 	{ { TWOFISH,				0 }, { XTS, 0 },	1 },
+	{ { CAMELLIA,				0 }, { XTS, 0 },	1 },
 	{ { TWOFISH, AES,			0 }, { XTS, 0 },	1 },
 	{ { SERPENT, TWOFISH, AES,	0 }, { XTS, 0 },	1 },
 	{ { AES, SERPENT,			0 }, { XTS, 0 },	1 },
 	{ { AES, TWOFISH, SERPENT,	0 }, { XTS, 0 },	1 },
 	{ { SERPENT, TWOFISH,		0 }, { XTS, 0 },	1 },
-	{ { SERPENT, TWOFISH, CAMELLIA,	0 }, { XTS, 0 },	1, 1 },
+	{ { SERPENT, TWOFISH, CAMELLIA,	0 }, { XTS, 0 },	1 },
 
 	{ { 0,						0 }, { 0, 0 },		0 },	// Must be all-zero
 

@@ -51,7 +51,7 @@ namespace TrueCrypt
 #elif defined (TC_MACOSX)
 				return VolumeCreationOptions::FilesystemType::MacOsExt;
 #elif defined (TC_FREEBSD) || defined (TC_SOLARIS)
-				return VolumeCreationOptions::FilesystemType::UFS;
+				return VolumeCreationOptions::FilesystemType::Ext3;
 #else
 				return VolumeCreationOptions::FilesystemType::FAT;
 #endif

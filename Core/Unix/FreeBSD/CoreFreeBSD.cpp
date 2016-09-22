@@ -189,10 +189,11 @@ namespace TrueCrypt
 		}
 		catch (ExecutedProcessFailed&)
 		{
-			if (!filesystemType.empty())
-				throw;
 			// maybe we have a container here so try FAT before failing
 			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? "msdos" : filesystemType, readOnly, systemMountOptions);
+			if (!filesystemType.empty())
+				throw;
+		  
 		}
 	}
 
