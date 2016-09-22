@@ -1,7 +1,7 @@
 # nemesis
 nemesis is a freebsd port based on TrueCrypt.<br>
-i had problems building security/truecrypt yesterday and while i was fixing the build i noticed some things i wanted to fix.<br>
-also, i have never been a fan of AES and i decided to take a crack at replacing it with a non-NIST cipher, that isn't known to be vulnerable as AES is, so I spent the day merging in Camellia and adding a cipher chain using it instead of AES that while slow as balls is probably vastly more secure.<br>
+i had problems building security/truecrypt last week and while i was fixing the build i noticed some other things i wanted to fix.<br>
+also, i have never been a fan of AES and i decided to take a crack at replacing it with a non-NIST cipher, so I spent a day merging in Camellia and adding a cipher chain using it instead of AES that while slow as balls is probably more secure.<br>
 ![capture2](https://cloud.githubusercontent.com/assets/22229007/18573416/36651456-7b91-11e6-9128-2e220f834c5a.png)
 UFS has been deprecated from this build, and replaced with ext3. you'd think that's strange for a freebsd application, but support for UFS was fairly broken, and i was able to get it reading and writing ext3 via the ext2fs kernel module, so if you haven't got it loaded already, kldload ext2fs before running nemesis.<br>
 once i got things working with ext3 and fat, i was able to get hidden volumes to work again. the problem was related to both the broken UFS support and some not smart behavior on behalf of mount. now, we look for an ext3 volume first, and failing that, we then look for a FAT volume, which could be the outer volume. end result, you get large file support, and hidden volumes back. not bad.<br>
