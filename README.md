@@ -7,7 +7,8 @@ UFS has been deprecated from this build, and replaced with ext3. you'd think tha
 once i got things working with ext3 and fat, i was able to get hidden volumes to work again. the problem was related to both the broken UFS support and some not smart behavior on behalf of mount. now, we look for an ext3 volume first, and failing that, we then look for a FAT volume, which could be the outer volume. end result, you get large file support, and hidden volumes back. not bad.<br>
 ![normal-innervol2](https://cloud.githubusercontent.com/assets/22229007/18756831/5e0f18f2-80bf-11e6-86ae-99b8597a2b77.png)<br>
 ![outer-mounted2](https://cloud.githubusercontent.com/assets/22229007/18756885/9328a940-80bf-11e6-9fb0-b482d9e11c62.png)<br>
-this version has also been updated to use a shared library version of wxWidgets 3.0.2 as opposed to the 2.8 packaged with the original TC. i'm considering making that static and including a wxWidgets port with this package as well, as the wxgtk-3.0.2 in the ports tree doesn't seem to fully install itself. you're going to need to install that and make sure this can find wx-config or wx-config-3.0 to build. i'm probably not going to make that change back to static any time soon because it would drive me insane to rebuild wxWidgets every time i change something here, and i just don't love you all that much.<br>
+this version has also been updated to use a shared library version of wxWidgets 3.0.2 as opposed to the 2.8 packaged with the original TC. the wxgtk-3.0.2 in the ports tree doesn't seem to fully install itself, you will need to  make sure this can find wx-config 
+or wx-config-3.0 to build. i'm probably not going to make that change back to static any time soon because it would drive me insane to rebuild wxWidgets every time i change something here, and i just don't love you all that much.<br>
 ultimately i'm planning to rewrite as much of this as possible and address as much of the audit as possible.<br>
 i have a lot of time on my hands.<br>
 i'd like to add Skein and ditch most of the hashes, try to protect the key in memory, perhaps. instead of taking a CRC of the keyfile/password in cases where there is a key, i'd prefer to use a hash instead of that CRC. that sort of change would break backwards compatibility with the original, but i guess adding read support that allowed for the old way of mounting old volumes would be doable, with perhaps a migration wizard. <br>
@@ -19,7 +20,9 @@ don't ruin it.
 <br>
 <br>
 this builds via gmake on freebsd<br>
-you need a working wx-config for wxgtk2-3.0 and you need to point the Makefile at it<br>
+you need a working wx-config for wx-gtk2-3.0.2 specified in the Makefile<br>
+in case you are having trouble you can git clone https://github.com/adouble42/wxWidgets-3-patched somewhere else, cd to there, run ./autogen.sh;./configure;make<br>
+you're welcome<br>
 <br>
 <br>
 #DicksOutForHarambe
