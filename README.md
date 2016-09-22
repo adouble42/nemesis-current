@@ -17,7 +17,10 @@ i get to learn a lot of things and my freebsd friends get an updated homage to o
 this is already fun for me.<br>
 don't ruin it.
 <br>
-this is meant to be built via a freebsd port, which i've also been providing via the adouble42/nemesis repo, but at the moment the port lags behind some features, i'm going to update it when i get some more done here. you can just put a tarball of it in /usr/ports/distfiles and modify the Makefile from the port appropriately, make NO_CHECKSUM=yes from the port directory. you need a working wx<br>
+<br>
+this builds via gmake on freebsd<br>
+you need a working wx-config for wxgtk2-3.0 and you need to point the Makefile at it<br>
+<br>
 <br>
 #DicksOutForHarambe
 
