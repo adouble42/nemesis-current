@@ -112,17 +112,17 @@ int main(int arc, char **argv) {
         printf("keygen fail\n");
     if (ntru_rand_init(&rand_sk_ctx, &rng_sk) != NTRU_SUCCESS)
         printf("rng_sk fail\n");
-    if (ntru_rand_generate(plain, 160, &rand_sk_ctx) != NTRU_SUCCESS) {
+    if (ntru_rand_generate(plain, 64, &rand_sk_ctx) != NTRU_SUCCESS) {
         return NTRU_ERR_PRNG;
     } else {
-      printf("generated 160 byte random symmetric key\n");
+      printf("generated 64 byte random symmetric key\n");
     }
     char buffer_int[4];
     int randomID = arc4random() % 2000 + 1000;
     printf("hash multiplier: [%i]\n",randomID);
     sprintf(buffer_int,"%i",randomID);
-    for (i=160; i<164; i++)
-      plain[i] = buffer_int[(i-160)];
+    for (i=64; i<68; i++)
+      plain[i] = buffer_int[(i-64)];
     randomID=0;
     
     printf("256 bit mode comparison:\n");
@@ -167,12 +167,12 @@ int main(int arc, char **argv) {
     //    printf(strcmp((char*)plain, (char*)dec)==0 ? "successful\n" : "failed\n");
     //    printf("message: [%s]\npassword: [%s]\n",(char *)plain, (char *)dec);
     int dec_success=1;
-    for (i=0; i<170; i++)
+    for (i=0; i<68; i++)
       if(plain[i] != dec[i])
 	dec_success = 0;
     char buffer_intd[4];
-    for (i=160; i<164; i++)
-      buffer_intd[(i-160)]=dec[i];
+    for (i=64; i<68; i++)
+      buffer_intd[(i-64)]=dec[i];
     randomID=strtol(buffer_intd, (char **)NULL, 10);
     if (dec_success==1) {
       printf("decrypted generated symmetric key successfully using password [%s]\nhash multiplier: [%i]\n", password_char,randomID);
