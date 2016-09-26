@@ -1,4 +1,6 @@
 # nemesis
+testing branch - these features may/will break backwards compatibility 
+until merged back. they will be disclosed as completed.<br>
 nemesis is a freebsd port based on TrueCrypt, i'm slowly rebranding it to comply with the license but that is probably my least favorite task. which is not to say i didn't have some fun with it...<br>
 i had problems building security/truecrypt last week and while i was fixing the build i noticed some other things i wanted to fix, and i've always been interested in changing some things.<br>
 also, i have never been a fan of AES and i decided to take a crack at replacing it with a non-NIST cipher, so I spent a day merging in Camellia and adding a cipher chain using it instead of AES that while slow as balls is probably more secure.<br>
