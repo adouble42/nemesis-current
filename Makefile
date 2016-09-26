@@ -263,13 +263,12 @@ PROJ_DIRS := Platform Volume Driver/Fuse Core Main
 
 all clean:
 	@if pwd | grep -q ' '; then echo 'Error: source code is stored in a path containing spaces' >&2; exit 1; fi
-
+	@$(MAKE) -C $(BASE_DIR)/Core/libntru static-lib
 	@for DIR in $(PROJ_DIRS); do \
 		PROJ=$$(echo $$DIR | cut -d/ -f1); \
 		$(MAKE) -C $$DIR -f $$PROJ.make NAME=$$PROJ $(MAKECMDGOALS) || exit $?; \
-		export LIBS="$(BASE_DIR)/$$DIR/$$PROJ.a $$LIBS "; \
-	done	
-
+		export LIBS="$(BASE_DIR)/$$DIR/$$PROJ.a $(BASE_DIR)/Core/libntru/libntru.a $$LIBS "; \
+	done
 
 #------ wxWidgets build ------
 
