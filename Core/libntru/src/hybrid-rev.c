@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "ntru.h"
 #include <openssl/evp.h>
@@ -116,7 +117,14 @@ int main(int arc, char **argv) {
     } else {
       printf("generated 160 byte random symmetric key\n");
     }
-    plain[161]='\0';
+    char buffer_int[4];
+    int randomID = arc4random() % 2000 + 1000;
+    printf("hash multiplier: [%i]\n",randomID);
+    sprintf(buffer_int,"%i",randomID);
+    for (i=160; i<164; i++)
+      plain[i] = buffer_int[(i-160)];
+    randomID=0;
+    
     printf("256 bit mode comparison:\n");
     printf("size of ciphertext EES1499EP1 params: %i\n",ntru_enc_len(&EES1499EP1));
     printf("max length of plaintext EES1499EP1 params: %i\n",ntru_max_msg_len(&EES1499EP1));
@@ -162,8 +170,12 @@ int main(int arc, char **argv) {
     for (i=0; i<170; i++)
       if(plain[i] != dec[i])
 	dec_success = 0;
+    char buffer_intd[4];
+    for (i=160; i<164; i++)
+      buffer_intd[(i-160)]=dec[i];
+    randomID=strtol(buffer_intd, (char **)NULL, 10);
     if (dec_success==1) {
-      printf("decrypted generated symmetric key successfully using password [%s]\n", password_char);
+      printf("decrypted generated symmetric key successfully using password [%s]\nhash multiplier: [%i]\n", password_char,randomID);
     } else {
       printf("decryption of generated symmetric key failed\n");
     }
