@@ -102,7 +102,7 @@ typedef unsigned __int8 uint_8t;
 typedef unsigned __int16 uint_16t;
 typedef unsigned __int32 uint_32t;
 #ifndef TC_NO_COMPILER_INT64
-typedef uint64 uint_64t;
+typedef unsigned long long uint_64t;
 #endif
 
 typedef union 

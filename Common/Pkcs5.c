@@ -13,11 +13,13 @@
 
 #include <memory.h>
 #include "Rmd160.h"
-#ifndef TC_WINDOWS_BOOT
+//#ifndef TC_WINDOWS_BOOT
 #include "Sha1.h"
 #include "Sha2.h"
 #include "Whirlpool.h"
-#endif
+#include "blake.h"
+#include "skein.h"
+//#endif
 #include "Pkcs5.h"
 #include "Crypto.h"
 
@@ -33,7 +35,7 @@ void hmac_truncate
 		d2[i] = d1[i];
 }
 
-#ifndef TC_WINDOWS_BOOT
+//#ifndef TC_WINDOWS_BOOT
 
 void hmac_sha512
 (
@@ -319,7 +321,7 @@ void derive_key_sha1 (char *pwd, int pwd_len, char *salt, int salt_len, int iter
 	burn (u, sizeof(u));
 }
 
-#endif // TC_WINDOWS_BOOT
+//#endif // TC_WINDOWS_BOOT
 
 void hmac_ripemd160 (char *key, int keylen, char *input, int len, char *digest)
 {
@@ -451,7 +453,7 @@ void derive_key_ripemd160 (char *pwd, int pwd_len, char *salt, int salt_len, int
 	burn (u, sizeof(u));
 }
 
-#ifndef TC_WINDOWS_BOOT
+// #ifndef TC_WINDOWS_BOOT
 
 void hmac_whirlpool
 (
@@ -591,6 +593,145 @@ void derive_key_whirlpool (char *pwd, int pwd_len, char *salt, int salt_len, int
 	burn (u, sizeof(u));
 }
 
+// BLAKE-512
+void hmac_blake512
+(
+	  char *k,		/* secret key */
+	  int lk,		/* length of the key in bytes */
+	  char *d,		/* data */
+	  int ld,		/* length of data in bytes */
+	  char *out,	/* output buffer, at least "t" bytes */
+	  int t
+)
+{
+	BLAKE512_CTX ictx, octx;
+	char iwhi[BLAKE512_DIGESTSIZE], owhi[BLAKE512_DIGESTSIZE];
+	char key[BLAKE512_DIGESTSIZE];
+	char buf[BLAKE512_BLOCKSIZE];
+	int i;
+
+    /* If the key is longer than the hash algorithm block size,
+	   let key = whirlpool(key), as per HMAC specifications. */
+	if (lk > BLAKE512_BLOCKSIZE)
+	{
+		BLAKE512_CTX tctx;
+
+		blake512_init (&tctx);
+		blake512_update (&tctx, (unsigned char *) k, lk);
+		blake512_final (&tctx, (unsigned char *) key);
+
+		k = key;
+		lk = BLAKE512_DIGESTSIZE;
+
+		burn (&tctx, sizeof(tctx));		// Prevent leaks
+	}
+
+	/**** Inner Digest ****/
+
+	blake512_init (&ictx);
+
+	/* Pad the key for inner digest */
+	for (i = 0; i < lk; ++i)
+		buf[i] = (char) (k[i] ^ 0x36);
+	for (i = lk; i < BLAKE512_BLOCKSIZE; ++i)
+		buf[i] = 0x36;
+
+	blake512_update (&ictx, (unsigned char *) buf, BLAKE512_BLOCKSIZE);
+	blake512_update (&ictx, (unsigned char *) d, ld);
+
+	blake512_final (&ictx, (unsigned char *) iwhi);
+
+	/**** Outer Digest ****/
+
+	blake512_init (&octx);
+
+	for (i = 0; i < lk; ++i)
+		buf[i] = (char) (k[i] ^ 0x5C);
+	for (i = lk; i < BLAKE512_BLOCKSIZE; ++i)
+		buf[i] = 0x5C;
+
+	blake512_update (&octx, (unsigned char *) buf, BLAKE512_BLOCKSIZE);
+	blake512_update (&octx, (unsigned char *) iwhi, BLAKE512_DIGESTSIZE);
+
+	blake512_final (&octx, (unsigned char *) owhi);
+
+	/* truncate and print the results */
+	t = t > BLAKE512_DIGESTSIZE ? BLAKE512_DIGESTSIZE : t;
+	hmac_truncate (owhi, out, t);
+
+	/* Prevent possible leaks. */
+	burn (&ictx, sizeof(ictx));
+	burn (&octx, sizeof(octx));
+	burn (owhi, sizeof(owhi));
+	burn (iwhi, sizeof(iwhi));
+	burn (buf, sizeof(buf));
+	burn (key, sizeof(key));
+}
+
+void derive_u_blake512 (char *pwd, int pwd_len, char *salt, int salt_len, int iterations, char *u, int b)
+{
+	char j[BLAKE512_DIGESTSIZE], k[BLAKE512_DIGESTSIZE];
+	char init[128];
+	char counter[4];
+	int c, i;
+
+	/* iteration 1 */
+	memset (counter, 0, 4);
+	counter[3] = (char) b;
+	memcpy (init, salt, salt_len);	/* salt */
+	memcpy (&init[salt_len], counter, 4);	/* big-endian block number */
+	hmac_blake512 (pwd, pwd_len, init, salt_len + 4, j, BLAKE512_DIGESTSIZE);
+	memcpy (u, j, BLAKE512_DIGESTSIZE);
+
+	/* remaining iterations */
+	for (c = 1; c < iterations; c++)
+	{
+		hmac_blake512 (pwd, pwd_len, j, BLAKE512_DIGESTSIZE, k, BLAKE512_DIGESTSIZE);
+		for (i = 0; i < BLAKE512_DIGESTSIZE; i++)
+		{
+			u[i] ^= k[i];
+			j[i] = k[i];
+		}
+	}
+
+	/* Prevent possible leaks. */
+	burn (j, sizeof(j));
+	burn (k, sizeof(k));
+}
+
+void derive_key_blake512 (char *pwd, int pwd_len, char *salt, int salt_len, int iterations, char *dk, int dklen)
+{
+	char u[BLAKE512_DIGESTSIZE];
+	int b, l, r;
+
+	if (dklen % BLAKE512_DIGESTSIZE)
+	{
+		l = 1 + dklen / BLAKE512_DIGESTSIZE;
+	}
+	else
+	{
+		l = dklen / BLAKE512_DIGESTSIZE;
+	}
+
+	r = dklen - (l - 1) * BLAKE512_DIGESTSIZE;
+
+	/* first l - 1 blocks */
+	for (b = 1; b < l; b++)
+	{
+		derive_u_blake512 (pwd, pwd_len, salt, salt_len, iterations, u, b);
+		memcpy (dk, u, BLAKE512_DIGESTSIZE);
+		dk += BLAKE512_DIGESTSIZE;
+	}
+
+	/* last block */
+	derive_u_blake512 (pwd, pwd_len, salt, salt_len, iterations, u, b);
+	memcpy (dk, u, r);
+
+
+	/* Prevent possible leaks. */
+	burn (u, sizeof(u));
+}
+
 
 char *get_pkcs5_prf_name (int pkcs5_prf_id)
 {
@@ -608,12 +749,15 @@ char *get_pkcs5_prf_name (int pkcs5_prf_id)
 	case WHIRLPOOL:	
 		return "HMAC-Whirlpool";
 
+	case BLAKE512:	
+		return "HMAC-Blake-512";
+		
 	default:		
 		return "(Unknown)";
 	}
 }
 
-#endif //!TC_WINDOWS_BOOT
+// #endif //!TC_WINDOWS_BOOT
 
 
 int get_pkcs5_iteration_count (int pkcs5_prf_id, BOOL bBoot)
@@ -623,8 +767,6 @@ int get_pkcs5_iteration_count (int pkcs5_prf_id, BOOL bBoot)
 	case RIPEMD160:	
 		return (bBoot ? 1000 : 2000);
 
-#ifndef TC_WINDOWS_BOOT
-
 	case SHA512:	
 		return 1000;			
 
@@ -633,7 +775,9 @@ int get_pkcs5_iteration_count (int pkcs5_prf_id, BOOL bBoot)
 
 	case WHIRLPOOL:	
 		return 1000;
-#endif
+
+	case BLAKE512:	
+		return 2000;
 
 	default:		
 		TC_THROW_FATAL_EXCEPTION;	// Unknown/wrong ID

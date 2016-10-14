@@ -122,6 +122,22 @@ namespace TrueCrypt
 		Pkcs5HmacWhirlpool (const Pkcs5HmacWhirlpool &);
 		Pkcs5HmacWhirlpool &operator= (const Pkcs5HmacWhirlpool &);
 	};
+	
+	class Pkcs5HmacBlake512 : public Pkcs5Kdf
+	{
+	public:
+		Pkcs5HmacBlake512 () { }
+		virtual ~Pkcs5HmacBlake512 () { }
+
+		virtual void DeriveKey (const BufferPtr &key, const VolumePassword &password, const ConstBufferPtr &salt, int iterationCount) const;
+		virtual shared_ptr <Hash> GetHash () const { return shared_ptr <Hash> (new Blake512); }
+		virtual int GetIterationCount () const { return 2000; }
+		virtual wstring GetName () const { return L"HMAC-Blake-512"; }
+
+	private:
+		Pkcs5HmacBlake512 (const Pkcs5HmacBlake512 &);
+		Pkcs5HmacBlake512 &operator= (const Pkcs5HmacBlake512 &);
+	};
 }
 
 #endif // TC_HEADER_Encryption_Pkcs5

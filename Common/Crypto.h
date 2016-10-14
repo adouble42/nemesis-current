@@ -52,6 +52,7 @@ extern "C" {
 enum
 {
 	WHIRLPOOL = FIRST_PRF_ID,
+	BLAKE512,
 #ifndef TC_WINDOWS_BOOT
 	SHA512,
 	RIPEMD160,
@@ -74,6 +75,9 @@ enum
 
 #define WHIRLPOOL_BLOCKSIZE		64
 #define WHIRLPOOL_DIGESTSIZE	64
+  
+#define BLAKE512_BLOCKSIZE		64
+#define BLAKE512_DIGESTSIZE	64
 
 #define MAX_DIGESTSIZE			WHIRLPOOL_DIGESTSIZE
 
@@ -198,6 +202,8 @@ typedef struct
 #	include "Sha1.h"
 #	include "Sha2.h"
 #	include "Whirlpool.h"
+#       include "blake.h"
+#       include "skein.h"
 #	include "Camellia.h"
 
 #endif

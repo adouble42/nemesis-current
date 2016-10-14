@@ -111,11 +111,12 @@ static EncryptionAlgorithm EncryptionAlgorithms[] =
 static Hash Hashes[] =
 {	// ID			Name			Deprecated		System Encryption
 	{ RIPEMD160,	"RIPEMD-160",	FALSE,			TRUE },
-#ifndef TC_WINDOWS_BOOT
+	// #ifndef TC_WINDOWS_BOOT
 	{ SHA512,		"SHA-512",		FALSE,			FALSE },
 	{ WHIRLPOOL,	"Whirlpool",	FALSE,			FALSE },
+	{ BLAKE512,	"Blake-512",	FALSE,			FALSE },
 	{ SHA1,			"SHA-1",		TRUE,			FALSE },	// Deprecated/legacy
-#endif
+	//#endif
 	{ 0, 0, 0 }
 };
 

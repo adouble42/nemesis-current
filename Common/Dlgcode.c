@@ -4301,6 +4301,7 @@ static BOOL PerformBenchmark(HWND hwndDlg)
 	{
 		BYTE *digest [MAX_DIGESTSIZE];
 		WHIRLPOOL_CTX	wctx;
+		BLAKE512_CTX   bctx;
 		RMD160_CTX		rctx;
 		sha1_ctx		sctx;
 		sha512_ctx		s2ctx;
@@ -4336,6 +4337,13 @@ static BOOL PerformBenchmark(HWND hwndDlg)
 				WHIRLPOOL_add (lpTestBuffer, benchmarkBufferSize * 8, &wctx);
 				WHIRLPOOL_finalize (&wctx, (unsigned char *) digest);
 				break;
+
+			case BLAKE512:
+				blake512_init (&bctx);
+				blake512_update (&bctx, lpTestBuffer, benchmarkBufferSize * 8);
+				blake512_final (&bctx, (unsigned char *) digest);
+				break;
+
 			}
 
 			if (QueryPerformanceCounter (&performanceCountEnd) == 0)
@@ -4392,6 +4400,12 @@ static BOOL PerformBenchmark(HWND hwndDlg)
 					/* PKCS-5 test with HMAC-Whirlpool used as the PRF */
 					derive_key_whirlpool ("passphrase-1234567890", 21, tmp_salt, 64, get_pkcs5_iteration_count(thid, FALSE), dk, MASTER_KEYDATA_SIZE);
 					break;
+
+				case BLAKE512:
+					/* PKCS-5 test with HMAC-Blake512 used as the PRF */
+					derive_key_blake512 ("passphrase-1234567890", 21, tmp_salt, 64, get_pkcs5_iteration_count(thid, FALSE), dk, MASTER_KEYDATA_SIZE);
+					break;
+
 				}
 			}
 

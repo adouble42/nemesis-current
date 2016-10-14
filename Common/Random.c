@@ -207,6 +207,7 @@ BOOL Randmix ()
 	{
 		unsigned char hashOutputBuffer [MAX_DIGESTSIZE];
 		WHIRLPOOL_CTX	wctx;
+		BLAKE512_CTX bctx
 		RMD160_CTX		rctx;
 		sha512_ctx		sctx;
 		int poolIndex, digestIndex, digestSize;
@@ -223,6 +224,10 @@ BOOL Randmix ()
 
 		case WHIRLPOOL:
 			digestSize = WHIRLPOOL_DIGESTSIZE;
+			break;
+
+		case BLAKE512:
+			digestSize = BLAKE512_DIGESTSIZE;
 			break;
 
 		default:
@@ -255,6 +260,12 @@ BOOL Randmix ()
 				WHIRLPOOL_finalize (&wctx, hashOutputBuffer);
 				break;
 
+			case BLAKE512:
+				blake512_init (&bctx);
+				blake512_update (&bctx,pRandPool, RNG_POOL_SIZE * 8);
+				blake512_final (&bctx, hashOutputBuffer);
+				break;
+
 			default:		
 				// Unknown/wrong ID
 				TC_THROW_FATAL_EXCEPTION;
@@ -283,6 +294,11 @@ BOOL Randmix ()
 			burn (&wctx, sizeof(wctx));		
 			break;
 
+		case BLAKE512:
+			burn (&bctx, sizeof(bctx));		
+			break;
+
+			
 		default:		
 			// Unknown/wrong ID
 			TC_THROW_FATAL_EXCEPTION;

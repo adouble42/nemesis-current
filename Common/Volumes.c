@@ -319,6 +319,12 @@ KeyReady:	;
 					PKCS5_SALT_SIZE, keyInfo.noIterations, dk, GetMaxPkcs5OutSize());
 				break;
 
+			case BLAKE512:
+				derive_key_blake512 (keyInfo.userKey, keyInfo.keyLength, keyInfo.salt,
+					PKCS5_SALT_SIZE, keyInfo.noIterations, dk, GetMaxPkcs5OutSize());
+				break;
+
+				
 			default:		
 				// Unknown/wrong ID
 				TC_THROW_FATAL_EXCEPTION;
@@ -777,6 +783,11 @@ int CreateVolumeHeaderInMemory (BOOL bBoot, char *header, int ea, int mode, Pass
 
 	case WHIRLPOOL:
 		derive_key_whirlpool (keyInfo.userKey, keyInfo.keyLength, keyInfo.salt,
+			PKCS5_SALT_SIZE, keyInfo.noIterations, dk, GetMaxPkcs5OutSize());
+		break;
+
+	case BLAKE512:
+		derive_key_blake512 (keyInfo.userKey, keyInfo.keyLength, keyInfo.salt,
 			PKCS5_SALT_SIZE, keyInfo.noIterations, dk, GetMaxPkcs5OutSize());
 		break;
 

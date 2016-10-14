@@ -21,5 +21,6 @@ SOURCES = \
 	Sha2.c \
 	Twofish.c \
 	Whirlpool.c \
-	Camellia.c
+	Camellia.c \
+	blake512.c
 

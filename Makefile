@@ -29,20 +29,20 @@ export BASE_DIR := $(CURDIR)
 export BUILD_INC := $(BASE_DIR)/Build/Include
 export NOTEST := 1
 export AR ?= ar
-export CC ?= gcc
-export CXX ?= g++
+export CC ?= clang
+export CXX ?= clang++
 export AS := nasm
 export RANLIB ?= ranlib
 
 export CFLAGS := -Wall
-export CXXFLAGS := -Wall -Wno-unused-parameter
-C_CXX_FLAGS := -MMD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGE_FILES -I$(BASE_DIR) -I$(BASE_DIR)/Crypto `wx-config --cxxflags`
+export CXXFLAGS := -Wall -Wno-unused-parameter -lstdc++
+C_CXX_FLAGS := -MMD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGE_FILES -I$(BASE_DIR) -I$(BASE_DIR)/Crypto -I/usr/include `~/projects/wxWidgets-3-patched/wx-config --cxxflags`
 export ASFLAGS := -Ox -D __GNUC__
 export LFLAGS :=
 export LDLIBS += -lX11
 export PKG_CONFIG_PATH ?= /usr/local/lib/pkgconfig
 
-export WX_CONFIG ?= wx-config
+export WX_CONFIG ?= ~/projects/wxWidgets-3-patched/wx-config
 export WX_CONFIG_ARGS := --unicode
 WX_CONFIGURE_FLAGS :=
 export WXCONFIG_CFLAGS :=
@@ -51,6 +51,10 @@ WX_ROOT ?= wxWidgets-3.0.2
 
 export TC_BUILD_CONFIG := Release
 
+ifeq "$(shell uname -s)" "Darwin"
+	CPU_ARCH = x64
+	ASM_OBJ_FORMAT = macho64
+endif
 ifeq "$(origin DEBUG)" "command line"
 	ifneq "$(DEBUG)" "0"
 		TC_BUILD_CONFIG := Debug
@@ -74,7 +78,11 @@ endif
 ifneq "$(origin VERBOSE)" "command line"
 	MAKEFLAGS += -s
 endif
-
+ifeq "$(CPU_ARCH)" "x86"
+	C_CXX_FLAGS += -D TC_ARCH_X86
+else ifeq "$(CPU_ARCH)" "x64"
+	C_CXX_FLAGS += -D TC_ARCH_X64
+endif
 #ifeq "$(origin WXSTATIC)" "command line"
 #	WX_CONFIG = $(WX_BUILD_DIR)/wx-config
 #endif
@@ -121,8 +129,10 @@ ARCH = $(shell uname -p)
 ifeq "$(ARCH)" "unknown"
 	ARCH = $(shell uname -m)
 endif
-
-ifneq (,$(filter i386 i486 i586 i686 x86,$(ARCH)))
+ifeq "$(shell uname -s)" "Darwin"
+	CPU_ARCH = x64
+	ASM_OBJ_FORMAT = macho64
+else ifneq (,$(filter i386 i486 i586 i686 x86,$(ARCH)))
 	CPU_ARCH = x86
 	ASM_OBJ_FORMAT = elf32
 else ifneq (,$(filter x86_64 x86-64 amd64 x64,$(ARCH)))
@@ -134,6 +144,11 @@ ifeq "$(origin NOASM)" "command line"
 	CPU_ARCH = unknown
 endif
 
+ifeq "$(CPU_ARCH)" "x86"
+	C_CXX_FLAGS += -D TC_ARCH_X86
+else ifeq "$(CPU_ARCH)" "x64"
+	C_CXX_FLAGS += -D TC_ARCH_X64
+endif
 ifeq "$(CPU_ARCH)" "x86"
 	C_CXX_FLAGS += -D TC_ARCH_X86
 else ifeq "$(CPU_ARCH)" "x64"
@@ -170,19 +185,22 @@ ifeq "$(shell uname -s)" "Darwin"
 	PLATFORM := MacOSX
 	APPNAME := nemesis
 
-	TC_OSX_SDK ?= /Developer/SDKs/MacOSX10.4u.sdk
-	CC := gcc-4.0
-	CXX := g++-4.0
+	TC_OSX_SDK ?= /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
+	CC := clang
+	CXX := clang++
 
-	C_CXX_FLAGS += -DTC_UNIX -DTC_BSD -DTC_MACOSX -mmacosx-version-min=10.4 -isysroot $(TC_OSX_SDK)
-	LFLAGS += -mmacosx-version-min=10.4 -Wl,-syslibroot $(TC_OSX_SDK)
-	WX_CONFIGURE_FLAGS += --with-macosx-version-min=10.4 --with-macosx-sdk=$(TC_OSX_SDK)
+	OBJCXXFLAGS += -stdlib=libstdc++ -std=c++11
+	LDFLAGS += -stdlib=libstdc++
+	CXXFLAGS += -stdlib=libstdc++
+	C_CXX_FLAGS += -DTC_UNIX -DTC_BSD -DTC_MACOSX -mmacosx-version-min=10.7 -isysroot $(TC_OSX_SDK)
+#	LFLAGS += -mmacosx-version-min=10.4 -Wl,-syslibroot $(TC_OSX_SDK)
+#	WX_CONFIGURE_FLAGS += --with-macosx-version-min=10.4 --with-macosx-sdk=$(TC_OSX_SDK)
 
-	ifeq "$(CPU_ARCH)" "x64"
-		CPU_ARCH = x86
-	endif
-
-	ASM_OBJ_FORMAT = macho
+#	ifeq "$(CPU_ARCH)" "x64"
+#		CPU_ARCH = x86_64
+#	endif
+	CPU_ARCH = x64
+	ASM_OBJ_FORMAT = macho64
 	ASFLAGS += --prefix _
 
 	ifeq "$(TC_BUILD_CONFIG)" "Release"
@@ -192,8 +210,8 @@ ifeq "$(shell uname -s)" "Darwin"
 		S := $(C_CXX_FLAGS)
 		C_CXX_FLAGS = $(subst -MMD,,$(S))
 
-		C_CXX_FLAGS += -gfull -arch i386 -arch ppc
-		LFLAGS += -Wl,-dead_strip -arch i386 -arch ppc
+		C_CXX_FLAGS += -gfull
+		LFLAGS += -Wl,-dead_strip
 
 		WX_CONFIGURE_FLAGS += --enable-universal_binary
 		WXCONFIG_CFLAGS += -gfull
@@ -263,11 +281,11 @@ PROJ_DIRS := Platform Volume Driver/Fuse Core Main
 
 all clean:
 	@if pwd | grep -q ' '; then echo 'Error: source code is stored in a path containing spaces' >&2; exit 1; fi
-	@$(MAKE) -C $(BASE_DIR)/Core/libntru static-lib
+#	$(MAKE) -C $(BASE_DIR)/Core/libntru
 	@for DIR in $(PROJ_DIRS); do \
 		PROJ=$$(echo $$DIR | cut -d/ -f1); \
 		$(MAKE) -C $$DIR -f $$PROJ.make NAME=$$PROJ $(MAKECMDGOALS) || exit $?; \
-		export LIBS="$(BASE_DIR)/$$DIR/$$PROJ.a $(BASE_DIR)/Core/libntru/libntru.a $$LIBS "; \
+		export LIBS="$(BASE_DIR)/$$DIR/$$PROJ.a $$LIBS"; \
 	done
 
 #------ wxWidgets build ------

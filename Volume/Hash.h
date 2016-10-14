@@ -130,6 +130,50 @@ namespace TrueCrypt
 		Whirlpool (const Whirlpool &);
 		Whirlpool &operator= (const Whirlpool &);
 	};
+
+	// BLAKE-512
+	class Blake512 : public Hash
+	{
+	public:
+		Blake512 ();
+		virtual ~Blake512 () { }
+
+		virtual void GetDigest (const BufferPtr &buffer);
+		virtual size_t GetBlockSize () const { return 128; }
+		virtual size_t GetDigestSize () const { return 512 / 8; }
+		virtual wstring GetName () const { return L"Blake-512"; }
+		virtual shared_ptr <Hash> GetNew () const { return shared_ptr <Hash> (new Blake512); }
+		virtual void Init ();
+		virtual void ProcessData (const ConstBufferPtr &data);
+
+	protected:
+
+	private:
+		Blake512 (const Blake512 &);
+		Blake512 &operator= (const Blake512 &);
+	};
+	// Skein-1024
+	class Skein1024 : public Hash
+	{
+	public:
+		Skein1024 ();
+		virtual ~Skein1024 () { }
+
+		virtual void GetDigest (const BufferPtr &buffer);
+		virtual size_t GetBlockSize () const { return 128; }
+		virtual size_t GetDigestSize () const { return 1024 / 8; }
+		virtual wstring GetName () const { return L"Skein-1024"; }
+		virtual shared_ptr <Hash> GetNew () const { return shared_ptr <Hash> (new Skein1024); }
+		virtual void Init ();
+		virtual void ProcessData (const ConstBufferPtr &data);
+
+	protected:
+
+	private:
+		Skein1024 (const Skein1024 &);
+		Skein1024 &operator= (const Skein1024 &);
+	};
+
 }
 
 #endif // TC_HEADER_Encryption_Hash

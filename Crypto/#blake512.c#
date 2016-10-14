@@ -65,7 +65,6 @@ static const uint8_t blake_padding[129] =
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-
 void blake512_compress( BLAKE512_CTX *S, const uint8_t *block )
 {
   uint64_t v[16], m[16], i;
