@@ -110,7 +110,11 @@ else
 $(APPNAME): $(LIBS) $(OBJS)
 	@echo Linking $@
 #	$(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS) -lX11
-	$(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS)
+ifeq "$(PLATFORM)" "MacOSX"
+		$(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS) -stdlib=libstdc++
+else
+	        $(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS)
+endif
 endif
 
 ifeq "$(TC_BUILD_CONFIG)" "Release"

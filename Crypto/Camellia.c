@@ -13,6 +13,13 @@ and released into public domain.
 #if __APPLE__
 #include "machine/endian.h"
 #endif
+#ifdef TC_MACOSX
+#define	bswap64(x) (uint64_t) \
+ 	((x >> 56) | ((x >> 40) & 0xff00) | ((x >> 24) & 0xff0000) | \
+ 	((x >> 8) & 0xff000000) | ((x << 8) & ((uint64_t)0xff << 32)) | \
+ 	((x << 24) & ((uint64_t)0xff << 40)) | \
+ 	((x << 40) & ((uint64_t)0xff << 48)) | ((x << 56)))
+#endif
 //#define CPPCRYPTO_DEBUG
 
 

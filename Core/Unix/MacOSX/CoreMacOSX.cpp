@@ -7,6 +7,8 @@
 */
 
 #include <fstream>
+#include <iostream>
+#include <string>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/param.h>
@@ -112,54 +114,54 @@ namespace TrueCrypt
 		char fuseVersionString[MAXHOSTNAMELEN + 1] = { 0 };
 		size_t fuseVersionStringLength = MAXHOSTNAMELEN;
 
-		if (sysctlbyname ("macfuse.version.number", fuseVersionString, &fuseVersionStringLength, NULL, 0) != 0)
-			throw HigherFuseVersionRequired (SRC_POS);
+//		if (sysctlbyname ("macfuse.version.number", fuseVersionString, &fuseVersionStringLength, NULL, 0) != 0)
+//			throw HigherFuseVersionRequired (SRC_POS);
 
-		vector <string> fuseVersion = StringConverter::Split (string (fuseVersionString), ".");
-		if (fuseVersion.size() < 2)
-			throw HigherFuseVersionRequired (SRC_POS);
+//		vector <string> fuseVersion = StringConverter::Split (string (fuseVersionString), ".");
+//		if (fuseVersion.size() < 2)
+//			throw HigherFuseVersionRequired (SRC_POS);
 
-		uint32 fuseVersionMajor = StringConverter::ToUInt32 (fuseVersion[0]);
-		uint32 fuseVersionMinor = StringConverter::ToUInt32 (fuseVersion[1]);
+//		uint32 fuseVersionMajor = StringConverter::ToUInt32 (fuseVersion[0]);
+//		uint32 fuseVersionMinor = StringConverter::ToUInt32 (fuseVersion[1]);
 
-		if (fuseVersionMajor < 1 || (fuseVersionMajor == 1 && fuseVersionMinor < 3))
-			throw HigherFuseVersionRequired (SRC_POS);
+//		if (fuseVersionMajor < 1 || (fuseVersionMajor == 1 && fuseVersionMinor < 3))
+//			throw HigherFuseVersionRequired (SRC_POS);
 
 		// Mount volume image
 		string volImage = string (auxMountPoint) + FuseService::GetVolumeImagePath();
 
 		list <string> args;
 		args.push_back ("attach");
-		args.push_back (volImage);
 		args.push_back ("-plist");
 		args.push_back ("-noautofsck");
 		args.push_back ("-imagekey");
 		args.push_back ("diskimage-class=CRawDiskImage");
+		args.push_back (volImage);
 
-		if (!options.NoFilesystem && options.MountPoint && !options.MountPoint->IsEmpty())
+				if (!options.NoFilesystem && options.MountPoint && !options.MountPoint->IsEmpty())
 		{
-			args.push_back ("-mount");
-			args.push_back ("required");
-
 			// Let the system specify mount point except when the user specified a non-default one
 			if (string (*options.MountPoint).find (GetDefaultMountPointPrefix()) != 0)
 			{
+			        args.push_back ("-mount");
+			        args.push_back ("required");
 				args.push_back ("-mountpoint");
 				args.push_back (*options.MountPoint);
 			}
-		}
-		else
-			args.push_back ("-nomount");
-
+					}
+			if (options.NoFilesystem) {
+				args.push_back ("-nomount");
+			}
 		if (options.Protection == VolumeProtection::ReadOnly)
 			args.push_back ("-readonly");
 
-		string xml;
+		std::string xml;
 		
 		while (true)
 		{
 			try
 			{
+       			  printf("prcocessing\n");
 				xml = Process::Execute ("hdiutil", args);
 				break;
 			}
@@ -187,16 +189,17 @@ namespace TrueCrypt
 		size_t e = xml.find ("</string>", p);
 		if (e == string::npos)
 			throw ParameterIncorrect (SRC_POS);
-
+		printf("stringconverter\n");
 		DevicePath virtualDev = StringConverter::Trim (xml.substr (p, e - p));
-
+		cout << "virtualDev: " << StringConverter::Trim (xml.substr (p, e - p));
 		try
 		{
 			FuseService::SendAuxDeviceInfo (auxMountPoint, virtualDev);
 		}
 		catch (...)
 		{
-			try
+			printf("survived fuseservice\n");
+		        try
 			{
 				list <string> args;
 				args.push_back ("detach");
