@@ -777,7 +777,7 @@ int get_pkcs5_iteration_count (int pkcs5_prf_id, BOOL bBoot)
 		return 1000;
 
 	case BLAKE512:	
-		return 2000;
+		return 800000;
 
 	default:		
 		TC_THROW_FATAL_EXCEPTION;	// Unknown/wrong ID

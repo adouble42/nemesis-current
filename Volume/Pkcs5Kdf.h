@@ -131,7 +131,7 @@ namespace TrueCrypt
 
 		virtual void DeriveKey (const BufferPtr &key, const VolumePassword &password, const ConstBufferPtr &salt, int iterationCount) const;
 		virtual shared_ptr <Hash> GetHash () const { return shared_ptr <Hash> (new Blake512); }
-		virtual int GetIterationCount () const { return 2000; }
+		virtual int GetIterationCount () const { return 800000; }
 		virtual wstring GetName () const { return L"HMAC-Blake-512"; }
 
 	private:
