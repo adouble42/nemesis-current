@@ -34,4 +34,4 @@ you're welcome<br>
 <br>
 "We can make surveillance expensive again. In particular, we need open protocols, open implementations, open systems -- these will be harder for the NSA to subvert." -- bruce schneier<br>
 required reading:<br>
-(https://www.schneier.com/blog/archives/2013/09/take_back_the_i.html), (http://cppcrypto.sourceforge.net/), (https://github.com/mjosaarinen/brutus),  (http://www.openwall.com/presentations/PHDays2014-Yescrypt/), (http://www.karljapetre.com/whirlpool/), (https://www.iacr.org/archive/fse2006/40470042/40470042.pdf), (https://github.com/tbuktu/libntru)<br>
+(http://www.phrack.org), (https://www.schneier.com/blog/archives/2013/09/take_back_the_i.html), (http://cppcrypto.sourceforge.net/), (https://github.com/mjosaarinen/brutus),  (http://www.openwall.com/presentations/PHDays2014-Yescrypt/), (http://www.karljapetre.com/whirlpool/), (https://www.iacr.org/archive/fse2006/40470042/40470042.pdf), (https://github.com/tbuktu/libntru)<br>
