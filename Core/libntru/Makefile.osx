@@ -1,8 +1,8 @@
-CC?=gcc
+CC?=gcc -fno-stack-protector -D_FORTIFY_SOURCE=0
 AS=$(CC) -c
 OPTFLAGS=-O2
 bench: OPTFLAGS=-O3
-CFLAGS=-g -Wall -Wextra -Wno-unused-parameter $(OPTFLAGS)
+CFLAGS=-g -Wall -Wextra -Wno-unused-parameter $(OPTFLAGS) -fno-stack-protector -D_FORTIFY_SOURCE=0
 SSSE3_FLAG = $(shell /usr/sbin/sysctl machdep.cpu.features | grep -m 1 -ow SSSE3)
 ifneq ($(SSE), no)
     ifeq ($(SSSE3_FLAG), SSSE3)
@@ -113,8 +113,9 @@ testnoham: clean lib $(TEST_OBJS_PATHS)
 bench: lib
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o bench $(SRCDIR)/bench.c $(LDFLAGS) -L. -lntru
 
-hybrid: lib
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o hybrid $(SRCDIR)/hybrid.c $(LDFLAGS) -L. -lntru -lcrypto
+hybrid-rev: lib
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o hybrid-rev $(SRCDIR)/hybrid-rev.c $(LDFLAGS) -L. -lntru -lcrypto -I/Users/wsmith/projects/MacOSX-SDKs/MacOSX10.7.sdk/usr/include/
+
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -fPIC $< -o $@
