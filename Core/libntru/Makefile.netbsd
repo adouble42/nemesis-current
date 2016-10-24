@@ -3,7 +3,7 @@ AS=$(CC) -c
 AR?=ar
 
 CFLAGS?=-g
-CFLAGS+=-Wall -Wextra -Wno-unused-parameter
+CFLAGS+=-Wall -Wextra -Wno-unused-parameter -g
 SSSE3_FLAG = $(shell /usr/bin/grep -o SSSE3 /var/run/dmesg.boot | /usr/bin/head -1)
 ifneq ($(SSE), no)
     ifeq ($(SSSE3_FLAG), SSSE3)

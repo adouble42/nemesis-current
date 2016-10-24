@@ -161,7 +161,7 @@ hybrid: static-lib
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o hybrid $(SRCDIR)/hybrid.c $(LDFLAGS) $(LIBS) -L. -lntru -lcrypto
 
 hybrid-rev: static-lib
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o hybrid-rev $(SRCDIR)/hybrid-rev.c $(LDFLAGS) $(LIBS) -L. -lntru -lcrypto
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o hybrid-rev $(SRCDIR)/hybrid-rev.c $(LDFLAGS) $(LIBS) -L. -lntru -lm -lcrypto
 
 
 $(SRCDIR)/%.o: $(SRCDIR)/%.c

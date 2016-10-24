@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <string.h>
 #include <math.h>
 #include "ntru.h"
@@ -480,7 +483,7 @@ int main(int argc, char *argv[]) {
     char *stripchars = "\r\n";
     
     uint8_t pub_arr_imp[ntru_pub_len(&EES1087EP2)];
-    uint8_t priv_arr_imp[ntru_priv_len(&EES1087EP2)];
+    uint8_t priv_arr_imp[ntru_priv_len(&EES1087EP2)]; 
 
     if (decMode == 1) { // don't load it unless we need it
             printf("enter coconut password to retrieve lime: ");
@@ -503,6 +506,7 @@ int main(int argc, char *argv[]) {
       fseek(Handle,sizeof(header_privline),SEEK_SET);
       fread(priv_buf,(sizeof(char)),(ntru_priv_len(&EES1087EP2)*2)+30,Handle);
       zStrrmv(priv_buf, priv_buf2,stripchars, (ntru_priv_len(&EES1087EP2)*2));
+
       hexStringToBytes(priv_buf, &priv_arr_imp, ntru_priv_len(&EES1087EP2));
 
       int xl;
@@ -510,10 +514,12 @@ int main(int argc, char *argv[]) {
 	shake_outp[xl] = priv_arr_imp[xl] ^ shake_finalp[xl];
       }
 
-      free(priv_buf2);
       fclose(Handle);
     }
-    ntru_import_priv(shake_outp, &kr.priv);
+    NtruEncPrivKey krpriv;
+    printf("importing\n");
+    ntru_import_priv(shake_outp, &krpriv);
+    kr.priv = krpriv;
     printf("private key loaded\n");
     }
     printf("importing NTRU public key from file %s\n",pkname);
@@ -522,14 +528,16 @@ int main(int argc, char *argv[]) {
     {
       char pub_buf[(sizeof(pub_arr_imp)*2)+60];
       char pub_buf2[(sizeof(pub_arr_imp)*2)+60];
+
       fseek(Handle,sizeof(header_publine), SEEK_SET);
       fread(pub_buf,(sizeof(char)), (ntru_pub_len(&EES1087EP2)*2)+60,Handle);
       zStrrmv(pub_buf, pub_buf2,stripchars, (ntru_pub_len(&EES1087EP2)*2));
       hexStringToBytes(pub_buf, &pub_arr_imp, ntru_pub_len(&EES1087EP2));
-      free(pub_buf2);
       fclose(Handle);
     }
-    ntru_import_pub(pub_arr_imp, &kr.pub);
+    NtruEncPubKey krpub;
+    ntru_import_pub(pub_arr_imp, &krpub);
+    kr.pub=krpub;
     printf("keys imported.\n");
 
     struct fileHeader {
@@ -548,18 +556,17 @@ if (encMode == 1) {
     struct fileHeader myInfo;
     int remainder, xx;
     float blocks;
-    
+
+    struct stat in_info;
+    stat(sfname, &in_info);
     input = fopen(sfname, "rb");
     output = fopen(ofname, "wb");
-    fseek(input, 0, SEEK_END);
-    myInfo.fileSize=ftell(input);
-    rewind(input);
-
+    myInfo.fileSize=in_info.st_size;
+    lseek(input,0, SEEK_SET);
     blocks = floor((myInfo.fileSize / 170));
-    remainder = myInfo.fileSize - (170 * blocks);
-    myInfo.fileSize=(int) blocks;
+    remainder = (myInfo.fileSize - (170 * blocks));
+    myInfo.fileSize=blocks;
     fwrite(&myInfo, sizeof(struct fileHeader), 1, output);
-
     if (ntru_rand_init(&rand_sk_ctx, &rng_sk) != NTRU_SUCCESS)
         printf("rng_sk fail\n");
     if (ntru_rand_generate(shake_key, 170, &rand_sk_ctx) != NTRU_SUCCESS) {
@@ -572,7 +579,7 @@ if (encMode == 1) {
     if (ntru_encrypt(shake_key, 170, &kr.pub, &EES1087EP2, &rand_sk_ctx, enc) == NTRU_SUCCESS)
 	fwrite(enc, sizeof(enc),1, output);
     FIPS202_SHAKE256(shake_key, 170, (unsigned char *) &stream_block, 170);
-    while ((nt=fread(fptr,sizeof(char),170, input)) == 170) {
+    while ((nt=fread(fptr,sizeof(char), 170, input)) == 170) {
       fbuf[nt] = '\0';
       for (xx=0;xx<nt;xx++) {
 	stream_final[xx] = fbuf[xx] ^ stream_block[xx];
@@ -613,7 +620,6 @@ if (decMode == 1) {
         printf("rng_sk fail\n");
     input = fopen(sfname, "rb");
     output = fopen(ofname, "wb");
-
     fread(&myInfo,sizeof(struct fileHeader),1,input);
     fread(decptr,sizeof(char),1495,input);
     ntru_decrypt(decptr, &kr, &EES1087EP2,&shake_key, (uint16_t *) &dec_len);
