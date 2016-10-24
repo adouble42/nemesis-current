@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <termios.h>
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
@@ -400,9 +401,20 @@ int main(int argc, char *argv[]) {
             NtruRandContext rand_ctx;
 
     if (keyGen == 1) {
+	    static struct termios oldt, newt;
+	    tcgetattr( STDIN_FILENO, &oldt);
+    	    newt = oldt;
+
+	    /*setting the approriate bit in the termios struct*/
+    	    newt.c_lflag &= ~(ECHO);          
+
+	    /*setting the new bits*/
+            tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+
 	    printf("enter a strong passphrase to protect the private key on disk: ");
 	    fgets(password_char, 100, stdin);
-
+	    printf("\n");
+	    tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 	    FIPS202_SHAKE256(password_char, strlen(password_char), &shake_outp, ntru_priv_len(&EES1087EP2));
 	    int i;
 	    for (i=0; i<250000; i++) { // put the lime in the coconut
@@ -486,8 +498,20 @@ int main(int argc, char *argv[]) {
     uint8_t priv_arr_imp[ntru_priv_len(&EES1087EP2)]; 
 
     if (decMode == 1) { // don't load it unless we need it
+	    static struct termios oldt, newt;
+            tcgetattr( STDIN_FILENO, &oldt);
+            newt = oldt;
+ 
+            /*setting the approriate bit in the termios struct*/
+            newt.c_lflag &= ~(ECHO);
+
+            /*setting the new bits*/
+            tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+
             printf("enter coconut password to retrieve lime: ");
 	    fgets(password_char, 100, stdin);
+	    printf("\n");
+            tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 	    printf("decrypting SHAKE-256, may take a moment.\n");
 
 	    FIPS202_SHAKE256(password_char, strlen(password_char), &shake_outp, ntru_priv_len(&EES1087EP2));
