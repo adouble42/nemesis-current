@@ -1,3 +1,31 @@
+binaries here - libntru.a is a 32 bit static library. not CompCert 
+because it still has some type issues
+hybrid-rev is a 32 bit, x86 CompCert 2.7.1 built for freebsd binary
+since CompCert is a bastard to build i'm leaving it here in case anyone 
+likes really slow, mathematically proven functions, but isn't 
+masochistic enough to go the whole 9 yards for them
+next i am going to add some compression via deflate and inflate in order 
+to offset the NTRU overhead, and start breaking this up in to some 
+clearly defined functions as opposed to the run on sentence it currently 
+takes the form of.
+i want to make this set of functions bombproof because one thing i want 
+to use them for, is adding a feature to detach and public key encrypt 
+nemesis volume headers, and reattach and convert back to symmetric 
+protections at destination.
+the idea is you can stash your volume somewhere without even a header 
+attached, and send the key safely to a stranger under separate cover, 
+who can then retrieve the volume, reattach the key to the volume with 
+symmetric protection. that's one use i can think of...i've got some more 
+in mind. that is why i opt here for NTRU on top of SHAKE as a mask, i 
+don't want to take chances with detached headers.
+in addition i plan on working these functions in to something stand 
+alone, hence the compression. in that mode i may find another stream 
+cipher to marry SHAKE to and use NTRU merely to protect the symmetric 
+keys in the usual hybrid configuration.
+RSA is getting close to it's end of life, and how much do you trust 
+elliptic curves...
+it's time to come up with some functional replacements
+
 # C implementation of NTRUEncrypt
 
 An implementation of the public-key encryption scheme NTRUEncrypt in C, following the IEEE P1363.1 standard.
