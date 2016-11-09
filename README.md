@@ -1,4 +1,4 @@
-# nemesis
+# nemesis - http://mrn.sixbit.org
 nemesis is a freebsd and Mac OS X (tested through 10.11) port based on TrueCrypt, i'm slowly rebranding it to comply with the original license but that is probably my least favorite task. which is not to say i didn't have some fun with it...whereever it is my right to dictate, the 2 clause BSD license shall apply.<br>
 OS - X nemesis binary here: http://mrn.sixbit.org/files/nemesis-667.dmg - this version is statically linked with wxWidgets 3.1.0 and includes a copy of a OSXFuse 3.5.3 in the DMG - if you don't have it installed already, install FUSE first WITH THE MACFUSE COMPATIBILITY LAYER ENABLED - i figure, it's about time.<br>
 <center>BLAKE512SUM of nemesis-667.dmg: f0c49e3ffe2a3a4411838e22dcb770f9a7269ab25f0d8cec6a6951b128e7c44010060c7c9fa33ffbe1345fa897a2967759f765b86ca5c8ff96da6fc4a98276c7</center>
