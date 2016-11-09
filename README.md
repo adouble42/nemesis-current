@@ -27,12 +27,6 @@ this is already fun for me.<br>
 don't ruin it.
 <br>
 <br>
-this builds via gmake on freebsd<br>
-you need a working wx-config for wx-gtk2-3.0.2 specified in the Makefile<br>
-in case you are having trouble you can git clone https://github.com/adouble42/wxWidgets-3-patched somewhere else, cd to there, run ./autogen.sh;./configure;make<br>
-you're welcome<br>
-<br>
-<br>
 #DicksOutForHarambe
 ![capture](https://cloud.githubusercontent.com/assets/22229007/18573392/06267938-7b91-11e6-867b-3a7a281830b4.png)
 <br>
