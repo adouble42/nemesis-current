@@ -36,14 +36,14 @@ export RANLIB ?= ranlib
 
 export CFLAGS := -Wall
 export CXXFLAGS := -Wall -Wno-unused-parameter -lstdc++
-C_CXX_FLAGS := -MMD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGE_FILES -I$(BASE_DIR) -I$(BASE_DIR)/Crypto -I/usr/include `~/projects/wxWidgets-3-patched/wx-config --cxxflags`
+C_CXX_FLAGS := -MMD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGE_FILES -I$(BASE_DIR) -I$(BASE_DIR)/Crypto -I/usr/include `wx-config --cxxflags`
 export ASFLAGS := -Ox -D __GNUC__
 export LFLAGS :=
 export LDLIBS += -lX11
 export PKG_CONFIG_PATH ?= /usr/local/lib/pkgconfig
 
-export WX_CONFIG ?= ~/projects/wxWidgets-3-patched/wx-config
-export WX_CONFIG_ARGS := --unicode
+export WX_CONFIG ?= wx-config
+#export WX_CONFIG_ARGS := --unicode
 WX_CONFIGURE_FLAGS :=
 export WXCONFIG_CFLAGS :=
 export WXCONFIG_CXXFLAGS :=
@@ -189,7 +189,7 @@ ifeq "$(shell uname -s)" "Darwin"
 	CC := clang
 	CXX := clang++
 
-	OBJCXXFLAGS += -stdlib=libstdc++ -std=c++11
+	OBJCXXFLAGS += -stdlib=libstdc++
 	LDFLAGS += -stdlib=libstdc++
 	CXXFLAGS += -stdlib=libstdc++
 	C_CXX_FLAGS += -DTC_UNIX -DTC_BSD -DTC_MACOSX -mmacosx-version-min=10.7 -isysroot $(TC_OSX_SDK)

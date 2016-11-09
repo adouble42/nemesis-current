@@ -201,10 +201,12 @@ namespace TrueCrypt
 #endif
 	}
 
-	PreferencesDialog::~PreferencesDialog ()
+	PreferencesDialog::~PreferencesDialog () // wxWidgets 3.1.0
 	{
+#ifdef TC_WINDOWS
 		if (RestoreValidatorBell)
 			wxTextValidator::SetBellOnError (false);
+#endif
 	}
 
 	void PreferencesDialog::SelectPage (wxPanel *page)
