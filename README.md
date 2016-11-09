@@ -1,7 +1,7 @@
 # nemesis - http://mrn.sixbit.org
 nemesis is a freebsd and Mac OS X (tested through 10.11) port based on TrueCrypt, i'm slowly rebranding it to comply with the original license but that is probably my least favorite task. which is not to say i didn't have some fun with it...whereever it is my right to dictate, the 2 clause BSD license shall apply.<br><br>
-OS - X nemesis binary here: <b>http://mrn.sixbit.org/files/nemesis-667.dmg</b> - this version is statically linked with wxWidgets 3.1.0 and includes a copy of a OSXFuse 3.5.3 in the DMG - if you don't have it installed already, install FUSE first WITH THE MACFUSE COMPATIBILITY LAYER ENABLED - i figure, it's about time.<br>
-<center>BLAKE512SUM of nemesis-667.dmg: <i>f0c49e3ffe2a3a4411838e22dcb770f9a7269ab25f0d8cec6a6951b128e7c44010060c7c9fa33ffbe1345fa897a2967759f765b86ca5c8ff96da6fc4a98276c7</i></center><br>
+OS - X nemesis binary release here: <b>http://mrn.sixbit.org/files/nemesis_667_fuse_bundle.dmg</b> - this version is statically linked with wxWidgets 3.1.0 and includes a bundled copy of a OSXFuse 3.5.3 in the installer - if you don't have it installed already, just accept the defaults and install and you're good to go. if you're already running an older FUSE version or didn't install MacFUSE compatibility you may want to let it upgrade you anyway.<br>
+<center>BLAKE512SUM of nemesis_667_fuse_bundle.dmg: <i>fe9ef6a1a755b2be225e28e4b520a3bc2cab731e338dac4ff7d7b197b5ae9dc2eee8896ed91c77f5bd3e8893b7ec53e6098dd6a9355a277842d3e3e30d2a1d81</i></center><br>
 BLAKE hash utilities - <b>http://mrn.sixbit.org/files/BLAKE.tgz</b>
 <br><br>
 TAKE HEED: TAKE WARNING: TAKE HEED:<br>
