@@ -36,18 +36,25 @@ export RANLIB ?= ranlib
 
 export CFLAGS := -Wall
 export CXXFLAGS := -Wall -Wno-unused-parameter -lstdc++
-C_CXX_FLAGS := -MMD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGE_FILES -I$(BASE_DIR) -I$(BASE_DIR)/Crypto -I/usr/include `~/projects/wxWidgets-3-patched/wx-config --cxxflags`
 export ASFLAGS := -Ox -D __GNUC__
 export LFLAGS :=
 export LDLIBS += -lX11
 export PKG_CONFIG_PATH ?= /usr/local/lib/pkgconfig
 
-export WX_CONFIG ?= ~/projects/wxWidgets-3-patched/wx-config
 export WX_CONFIG_ARGS := --unicode
 WX_CONFIGURE_FLAGS :=
 export WXCONFIG_CFLAGS :=
 export WXCONFIG_CXXFLAGS :=
-WX_ROOT ?= wxWidgets-3.0.2
+WX_ROOT = $(BASE_DIR)/wxWidgets-3.1.0
+WX_BUILD_DIR = wxrelease
+WX_STATIC := 1
+ifdef WX_STATIC
+        export WX_CONFIG = $(BASE_DIR)/$(WX_BUILD_DIR)/wx-config
+	export WX_CONFIG_ARGS = --static
+else
+	export WX_CONFIG = wx-config
+endif
+C_CXX_FLAGS := -MMD -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGE_FILES -I$(BASE_DIR) -I$(BASE_DIR)/Crypto -I/usr/include `$(WX_CONFIG) --cxxflags`
 
 export TC_BUILD_CONFIG := Release
 
@@ -83,9 +90,6 @@ ifeq "$(CPU_ARCH)" "x86"
 else ifeq "$(CPU_ARCH)" "x64"
 	C_CXX_FLAGS += -D TC_ARCH_X64
 endif
-#ifeq "$(origin WXSTATIC)" "command line"
-#	WX_CONFIG = $(WX_BUILD_DIR)/wx-config
-#endif
 
 
 #------ Release configuration ------
@@ -93,7 +97,6 @@ endif
 ifeq "$(TC_BUILD_CONFIG)" "Release"
 
 	C_CXX_FLAGS += -O2 -fno-strict-aliasing  # Do not enable strict aliasing
-	export WX_BUILD_DIR ?= $(BASE_DIR)/wxrelease
 	WX_CONFIGURE_FLAGS += --disable-debug_flag --disable-debug_gdb --disable-debug_info
 
 else
@@ -203,8 +206,6 @@ ifeq "$(shell uname -s)" "Darwin"
 	ASM_OBJ_FORMAT = macho64
 	ASFLAGS += --prefix _
 
-	ifeq "$(TC_BUILD_CONFIG)" "Release"
-
 		export DISABLE_PRECOMPILED_HEADERS := 1
 
 		S := $(C_CXX_FLAGS)
@@ -213,15 +214,8 @@ ifeq "$(shell uname -s)" "Darwin"
 		C_CXX_FLAGS += -gfull
 		LFLAGS += -Wl,-dead_strip
 
-		WX_CONFIGURE_FLAGS += --enable-universal_binary
 		WXCONFIG_CFLAGS += -gfull
 		WXCONFIG_CXXFLAGS += -gfull
-
-	else
-
-		WX_CONFIGURE_FLAGS += --disable-universal_binary
-
-	endif
 
 endif
 
@@ -257,27 +251,13 @@ ASFLAGS += -f $(ASM_OBJ_FORMAT)
 LFLAGS := $(LFLAGS) $(TC_EXTRA_LFLAGS)
 
 WX_CONFIGURE_FLAGS += --enable-unicode -disable-shared --disable-dependency-tracking --disable-compat26 --enable-exceptions --enable-std_string --enable-dataobj --enable-mimetype \
-	--disable-protocol --disable-protocols --disable-url --disable-ipc --disable-sockets --disable-fs_inet --disable-ole --disable-docview --disable-clipboard \
-	--disable-help --disable-html --disable-mshtmlhelp --disable-htmlhelp --disable-mdi --disable-metafile --disable-webkit \
-	--disable-xrc --disable-aui --disable-postscript --disable-printarch \
-	--disable-arcstream --disable-fs_archive --disable-fs_zip --disable-tarstream --disable-zipstream \
-	--disable-animatectrl --disable-bmpcombobox --disable-calendar --disable-caret --disable-checklst --disable-collpane --disable-colourpicker --disable-comboctrl \
-	--disable-datepick --disable-display --disable-dirpicker --disable-filepicker --disable-fontpicker --disable-grid  --disable-dataviewctrl \
-	--disable-listbook --disable-odcombobox --disable-sash  --disable-searchctrl --disable-slider --disable-splitter --disable-togglebtn \
-	--disable-toolbar --disable-tbarnative --disable-treebook --disable-toolbook --disable-tipwindow --disable-popupwin \
-	--disable-commondlg --disable-aboutdlg --disable-coldlg --disable-finddlg --disable-fontdlg --disable-numberdlg --disable-splash \
-	--disable-tipdlg --disable-progressdlg --disable-wizarddlg --disable-miniframe --disable-tooltips --disable-splines --disable-palette \
-	--disable-richtext --disable-dialupman --disable-debugreport --disable-filesystem \
-	--disable-graphics_ctx --disable-sound --disable-mediactrl --disable-joystick --disable-apple_ieee \
-	--disable-gif --disable-pcx --disable-tga --disable-iff --disable-gif --disable-pnm \
-	--without-expat --without-libtiff --without-libjpeg --without-libpng -without-regex --without-zlib
 
 
 #------ Project build ------
 
 PROJ_DIRS := Platform Volume Driver/Fuse Core Main
 
-.PHONY: all clean wxbuild
+.PHONY: all clean wxbuild nembuild
 
 all clean:
 	@if pwd | grep -q ' '; then echo 'Error: source code is stored in a path containing spaces' >&2; exit 1; fi
@@ -310,4 +290,4 @@ endif
 	
 	@echo Building wxWidgets library...
 #	cd "$(WX_BUILD_DIR)" && $(MAKE)
-	cd "$(WX_BUILD_DIR)" && $(MAKE) -j10
+	cd "$(WX_BUILD_DIR)" && $(MAKE) -j16
