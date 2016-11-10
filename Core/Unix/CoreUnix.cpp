@@ -447,7 +447,7 @@ namespace TrueCrypt
 				if (options.Protection == VolumeProtection::HiddenVolumeReadOnly)
 					throw UnsupportedSectorSizeHiddenVolumeProtection();
 
-				if (options.NoKernelCrypto)
+				if (options.NoKernelCrypto) // how about no kernel crypto ever
 					throw UnsupportedSectorSizeNoKernelCrypto();
 			}
 #endif

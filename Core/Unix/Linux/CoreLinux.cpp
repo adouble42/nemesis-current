@@ -114,7 +114,7 @@ namespace TrueCrypt
 	{
 		string devPath = mountedVolume->VirtualDevice;
 
-		if (devPath.find ("/dev/mapper/truecrypt") != 0)
+		if (devPath.find ("/dev/mapper/nemesis") != 0)
 			throw NotApplicable (SRC_POS);
 
 		size_t devCount = 0;
@@ -291,9 +291,12 @@ namespace TrueCrypt
 	{
 		bool xts = (typeid (*volume->GetEncryptionMode()) == typeid (EncryptionModeXTS));
 		bool lrw = (typeid (*volume->GetEncryptionMode()) == typeid (EncryptionModeLRW));
+		bool algoNotSupported = (typeid (*volume->GetEncryptionAlgorithm()) == typeid(Camellia))
+			|| (typeid (*volume->GetEncryptionAlgorithm()) == typeid(SerpentTwofishCamellia));
 
 		if (options.NoKernelCrypto
 			|| (!xts && (!lrw || volume->GetEncryptionAlgorithm()->GetCiphers().size() > 1 || volume->GetEncryptionAlgorithm()->GetMinBlockSize() != 16))
+			|| algoNotSupported
 			|| volume->GetProtectionType() == VolumeProtection::HiddenVolumeReadOnly)
 		{
 			throw NotApplicable (SRC_POS);
@@ -380,7 +383,7 @@ namespace TrueCrypt
 				}
 
 				stringstream nativeDevName;
-				nativeDevName << "truecrypt" << options.SlotNumber;
+				nativeDevName << "nemesis" << options.SlotNumber;
 				
 				if (nativeDevCount != cipherCount - 1)
 					nativeDevName << "_" << cipherCount - nativeDevCount - 2;

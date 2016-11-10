@@ -59,10 +59,11 @@ namespace TrueCrypt
 
 		OptionsButtonLabel = OptionsButton->GetLabel();
 		OptionsButton->SetLabel (OptionsButtonLabel + L" >");
-		OptionsPanel->Show (false);
+		OptionsPanel->Show (true);
 
 		ProtectionPasswordPanel = new VolumePasswordPanel (OptionsPanel, options.ProtectionPassword, options.ProtectionKeyfiles, false, true, true, false, false, _("P&assword to hidden volume:"));
 		ProtectionPasswordSizer->Add (ProtectionPasswordPanel, 1, wxALL | wxEXPAND);
+		ProtectionPasswordPanel->Show (true);
 
 		UpdateDialog();
 		Center();
