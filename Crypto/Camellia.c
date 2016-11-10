@@ -13,8 +13,8 @@ and released into public domain.
 #if __APPLE__
 #include "machine/endian.h"
 #endif
-#ifdef TC_MACOSX
-#define	bswap64(x) (uint64_t) \
+#ifndef bswap64 // moved to Common/endian, but we does it different here.
+#define	bswap64(x) (uint64_t) \ // so i saved it for reference
  	((x >> 56) | ((x >> 40) & 0xff00) | ((x >> 24) & 0xff0000) | \
  	((x >> 8) & 0xff000000) | ((x << 8) & ((uint64_t)0xff << 32)) | \
  	((x << 24) & ((uint64_t)0xff << 40)) | \

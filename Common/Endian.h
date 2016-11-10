@@ -132,7 +132,16 @@ extern "C"
 #	define BE32(x) (x)
 #	define BE64(x) (x)
 #endif
-
+#ifndef bswap64
+# define bswap64(x) ((((x) & 0x00000000000000FFULL) << 56) | \
+                      (((x) & 0x000000000000FF00ULL) << 40) | \
+                      (((x) & 0x0000000000FF0000ULL) << 24) | \
+                      (((x) & 0x00000000FF000000ULL) << 8)  | \
+                      (((x) & 0x000000FF00000000ULL) >> 8)  | \
+                      (((x) & 0x0000FF0000000000ULL) >> 24) | \
+                      (((x) & 0x00FF000000000000ULL) >> 40) | \
+                      (((x) & 0xFF00000000000000ULL) >> 56))
+#endif
 unsigned __int16 MirrorBytes16 (unsigned __int16 x);
 unsigned __int32 MirrorBytes32 (unsigned __int32 x);
 #ifndef TC_NO_COMPILER_INT64

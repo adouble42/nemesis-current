@@ -29,8 +29,8 @@ export BASE_DIR := $(CURDIR)
 export BUILD_INC := $(BASE_DIR)/Build/Include
 export NOTEST := 1
 export AR ?= ar
-export CC ?= clang
-export CXX ?= clang++
+export CC = clang
+export CXX = clang++
 export AS := nasm
 export RANLIB ?= ranlib
 
@@ -164,7 +164,9 @@ endif
 ifeq "$(shell uname -s)" "Linux"
 
 	PLATFORM := Linux
-	C_CXX_FLAGS += -DTC_UNIX -DTC_LINUX
+	C_CXX_FLAGS += -DTC_UNIX -DTC_LINUX -stdlib=libstdc++
+	OBJCXXFLAGS += -stdlib=libstdc++ -std=c++11
+	CXXFLAGS += -stdlib=libstdc++ -std=c++11
 
 	ifeq "$(TC_BUILD_CONFIG)" "Release"
 		C_CXX_FLAGS += -fdata-sections -ffunction-sections
