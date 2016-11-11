@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -14,7 +14,7 @@
 #include "VolumeException.h"
 #include "Common/Crypto.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	VolumeHeader::VolumeHeader (uint32 size)
 	{

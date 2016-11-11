@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #pragma once
@@ -176,7 +176,7 @@ typedef struct
 typedef struct
 {
 	wchar_t wszFileName[TC_MAX_PATH];		// Volume to be "open tested"
-	BOOL bDetectTCBootLoader;			// Whether the driver is to determine if the first sector contains a portion of the TrueCrypt Boot Loader
+	BOOL bDetectTCBootLoader;			// Whether the driver is to determine if the first sector contains a portion of the nemesis Boot Loader
 	BOOL TCBootLoaderDetected;
 	BOOL DetectFilesystem;
 	BOOL FilesystemDetected;
@@ -221,7 +221,7 @@ typedef struct
 	int64 HiddenSystemPartitionStart;
 
 	// Number of times the filter driver answered that an unencrypted volume
-	// is read-only (or mounted an outer/normal TrueCrypt volume as read only)
+	// is read-only (or mounted an outer/normal nemesis volume as read only)
 	uint32 HiddenSysLeakProtectionCount;
 
 } BootEncryptionStatus;
@@ -296,17 +296,17 @@ typedef struct
 #define DRIVER_STR
 #endif
 
-#define TC_UNIQUE_ID_PREFIX "TrueCryptVolume"
-#define TC_MOUNT_PREFIX L"\\Device\\TrueCryptVolume"
+#define TC_UNIQUE_ID_PREFIX "nemesisVolume"
+#define TC_MOUNT_PREFIX L"\\Device\\nemesisVolume"
 
-#define NT_MOUNT_PREFIX DRIVER_STR("\\Device\\TrueCryptVolume")
-#define NT_ROOT_PREFIX DRIVER_STR("\\Device\\TrueCrypt")
+#define NT_MOUNT_PREFIX DRIVER_STR("\\Device\\nemesisVolume")
+#define NT_ROOT_PREFIX DRIVER_STR("\\Device\\nemesis")
 #define DOS_MOUNT_PREFIX DRIVER_STR("\\DosDevices\\")
-#define DOS_ROOT_PREFIX DRIVER_STR("\\DosDevices\\TrueCrypt")
-#define WIN32_ROOT_PREFIX DRIVER_STR("\\\\.\\TrueCrypt")
+#define DOS_ROOT_PREFIX DRIVER_STR("\\DosDevices\\nemesis")
+#define WIN32_ROOT_PREFIX DRIVER_STR("\\\\.\\nemesis")
 
-#define TC_DRIVER_CONFIG_REG_VALUE_NAME DRIVER_STR("TrueCryptConfig")
-#define TC_ENCRYPTION_FREE_CPU_COUNT_REG_VALUE_NAME DRIVER_STR("TrueCryptEncryptionFreeCpuCount")
+#define TC_DRIVER_CONFIG_REG_VALUE_NAME DRIVER_STR("nemesisConfig")
+#define TC_ENCRYPTION_FREE_CPU_COUNT_REG_VALUE_NAME DRIVER_STR("nemesisEncryptionFreeCpuCount")
 
 // WARNING: Modifying the following values can introduce incompatibility with previous versions.
 #define TC_DRIVER_CONFIG_CACHE_BOOT_PASSWORD						0x1

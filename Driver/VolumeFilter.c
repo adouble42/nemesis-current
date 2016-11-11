@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2011 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2011 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -15,7 +15,7 @@
 typedef DriveFilterExtension VolumeFilterExtension;
 
 // Number of times the filter driver answered that an unencrypted volume
-// is read-only (or mounted an outer/normal TrueCrypt volume as read only)
+// is read-only (or mounted an outer/normal nemesis volume as read only)
 uint32 HiddenSysLeakProtectionCount = 0;
 
 
@@ -163,7 +163,7 @@ static NTSTATUS DispatchControl (PDEVICE_OBJECT DeviceObject, PIRP Irp, VolumeFi
 			if (!ProbingHostDeviceForWrite)
 				break;
 
-			// Probe the real state of the device as the user is mounting a TrueCrypt volume.
+			// Probe the real state of the device as the user is mounting a nemesis volume.
 
 			// Volume filter may be attached to a merged drive+volume PDO. First test if TC_IOCTL_DISK_IS_WRITABLE works for the underlying device.
 			status = SendDeviceIoControlRequest (Extension->LowerDeviceObject, TC_IOCTL_DISK_IS_WRITABLE, NULL, 0, NULL, 0);

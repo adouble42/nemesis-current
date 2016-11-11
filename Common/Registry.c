@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2004-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2004-2010 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -281,6 +281,6 @@ void DeleteRegistryValue (char *subKey, char *name)
 void GetStartupRegKeyName (char *regk)
 {
 	// The string is split in order to prevent some antivirus packages from falsely reporting  
-	// TrueCrypt.exe to contain a possible Trojan horse because of this string (heuristic scan).
+	// nemesis.exe to contain a possible Trojan horse because of this string (heuristic scan).
 	sprintf (regk, "%s%s", "Software\\Microsoft\\Windows\\Curren", "tVersion\\Run");
 }

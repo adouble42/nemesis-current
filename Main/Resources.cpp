@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -14,7 +14,7 @@
 #include "Main/resource.h"
 #endif
 
-namespace TrueCrypt
+namespace nemesis
 {
 
 #ifdef TC_WINDOWS
@@ -146,13 +146,13 @@ namespace TrueCrypt
 #endif
 	}
 
-	wxIcon Resources::GetTrueCryptIcon ()
+	wxIcon Resources::GetnemesisIcon ()
 	{
 #ifdef TC_WINDOWS
 		return wxIcon (L"IDI_TRUECRYPT_ICON", wxBITMAP_TYPE_ICO_RESOURCE, 16, 16);
 #else
-#		include "Resources/Icons/TrueCrypt-16x16.xpm"
-		return wxIcon (TrueCryptIcon16x16);
+#		include "Resources/Icons/nemesis-16x16.xpm"
+		return wxIcon (nemesisIcon16x16);
 #endif
 	}
 
@@ -163,7 +163,7 @@ namespace TrueCrypt
 #else
 		static const byte VolumeWizardIcon[] =
 		{
-#			include "Format/TrueCrypt_Wizard.bmp.h"
+#			include "Format/nemesis_Wizard.bmp.h"
 		};
 
 		wxMemoryInputStream stream (VolumeWizardIcon, sizeof (VolumeWizardIcon));

@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2012 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2012 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #include "TCdefs.h"
@@ -906,7 +906,7 @@ NTSTATUS ProcessMainDeviceControlIrp (PDEVICE_OBJECT DeviceObject, PEXTENSION Ex
 					}
 					else
 					{
-						// Determine if the first sector contains a portion of the TrueCrypt Boot Loader
+						// Determine if the first sector contains a portion of the nemesis Boot Loader
 
 						offset.QuadPart = 0;
 
@@ -926,7 +926,7 @@ NTSTATUS ProcessMainDeviceControlIrp (PDEVICE_OBJECT DeviceObject, PEXTENSION Ex
 
 							if (opentest->bDetectTCBootLoader && IoStatus.Information >= TC_SECTOR_SIZE_BIOS)
 							{
-								// Search for the string "TrueCrypt"
+								// Search for the string "nemesis"
 								for (i = 0; i < TC_SECTOR_SIZE_BIOS - strlen (TC_APP_NAME); ++i)
 								{
 									if (memcmp (readBuffer + i, TC_APP_NAME, strlen (TC_APP_NAME)) == 0)
@@ -995,7 +995,7 @@ NTSTATUS ProcessMainDeviceControlIrp (PDEVICE_OBJECT DeviceObject, PEXTENSION Ex
 
 			if (NT_SUCCESS (ntStatus))
 			{
-				// Determine if the first sector contains a portion of the TrueCrypt Boot Loader
+				// Determine if the first sector contains a portion of the nemesis Boot Loader
 				offset.QuadPart = 0;	// MBR
 
 				ntStatus = ZwReadFile (NtFileHandle,
@@ -1033,7 +1033,7 @@ NTSTATUS ProcessMainDeviceControlIrp (PDEVICE_OBJECT DeviceObject, PEXTENSION Ex
 					request->UserConfiguration = 0;
 					request->CustomUserMessage[0] = 0;
 
-					// Search for the string "TrueCrypt"
+					// Search for the string "nemesis"
 					for (i = 0; i < sizeof (readBuffer) - strlen (TC_APP_NAME); ++i)
 					{
 						if (memcmp (readBuffer + i, TC_APP_NAME, strlen (TC_APP_NAME)) == 0)

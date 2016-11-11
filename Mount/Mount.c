@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2012 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2012 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #include "Tcdefs.h"
@@ -46,7 +46,7 @@
 #include "../Platform/Finally.h"
 #include "../Platform/ForEach.h"
 
-using namespace TrueCrypt;
+using namespace nemesis;
 
 enum timer_ids
 {
@@ -96,7 +96,7 @@ BOOL bAutoMountFavorites = FALSE;
 BOOL bPlaySoundOnSuccessfulHkDismount = TRUE;
 BOOL bDisplayBalloonOnSuccessfulHkDismount = TRUE;
 BOOL bHibernationPreventionNotified = FALSE;	/* TRUE if the user has been notified that hibernation was prevented (system encryption) during the session. */
-BOOL bHiddenSysLeakProtNotifiedDuringSession = FALSE;	/* TRUE if the user has been notified during the session that unencrypted filesystems and non-hidden TrueCrypt volumes are mounted as read-only under hidden OS. */
+BOOL bHiddenSysLeakProtNotifiedDuringSession = FALSE;	/* TRUE if the user has been notified during the session that unencrypted filesystems and non-hidden nemesis volumes are mounted as read-only under hidden OS. */
 BOOL CloseSecurityTokenSessionsAfterMount = FALSE;
 BOOL DisableSystemCrashDetection = FALSE;
 BOOL SystemCrashDetected = FALSE;
@@ -627,7 +627,7 @@ static BOOL SysDriveOrPartitionFullyEncrypted (BOOL bSilent)
 		&& BootEncStatus.ConfiguredEncryptedAreaEnd == BootEncStatus.EncryptedAreaEnd);
 }
 
-// Returns TRUE if the system partition/drive is being filtered by the TrueCrypt driver and the key data
+// Returns TRUE if the system partition/drive is being filtered by the nemesis driver and the key data
 // was successfully decrypted (the device is fully ready to be encrypted or decrypted). Note that this
 // function does not examine whether the system device is encrypted or not (or to what extent).
 static BOOL SysEncDeviceActive (BOOL bSilent)
@@ -853,7 +853,7 @@ BOOL CheckSysEncMountWithoutPBA (const char *devicePath, BOOL quiet)
 }
 
 
-// Returns TRUE if the host drive of the specified partition contains a portion of the TrueCrypt Boot Loader
+// Returns TRUE if the host drive of the specified partition contains a portion of the nemesis Boot Loader
 // and if the drive is not within key scope of active system encryption (e.g. the system drive of the running OS).
 // If bPrebootPasswordDlgMode is TRUE, this function returns FALSE (because the check would be redundant).
 BOOL TCBootLoaderOnInactiveSysEncDrive (void) 
@@ -949,7 +949,7 @@ static void LaunchVolCreationWizard (HWND hwndDlg, const char *arg)
 		PROCESS_INFORMATION pi;
 		ZeroMemory (&si, sizeof (si));
 
-		strcpy (++tmp, "TrueCrypt Format.exe\"");
+		strcpy (++tmp, "nemesis Format.exe\"");
 
 		if (!FileExists(t))
 			Error ("VOL_CREATION_WIZARD_NOT_FOUND");	// Display a user-friendly error message and advise what to do
@@ -2926,7 +2926,7 @@ BOOL CALLBACK VolumePropertiesDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LP
 
 			if (bSysEnc)
 			{
-				// TrueCrypt Boot Loader version
+				// nemesis Boot Loader version
 				ListItemAddW (list, i, GetString ("TC_BOOT_LOADER_VERSION"));
 				ListSubItemSet (list, i++, 1, (char *) GetUserFriendlyVersionString (BootEncStatus.BootLoaderVersion).c_str());
 
@@ -3120,12 +3120,12 @@ BOOL CALLBACK TravelerDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 			WaitCursor ();
 			GetSystemDirectory (sysDir, sizeof (sysDir));
 
-			sprintf (dstPath, "%s\\TrueCrypt", dstDir);
+			sprintf (dstPath, "%s\\nemesis", dstDir);
 			CreateDirectory (dstPath, NULL);
 
 			// Main app
-			sprintf (srcPath, "%s\\TrueCrypt.exe", appDir);
-			sprintf (dstPath, "%s\\TrueCrypt\\TrueCrypt.exe", dstDir);
+			sprintf (srcPath, "%s\\nemesis.exe", appDir);
+			sprintf (dstPath, "%s\\nemesis\\nemesis.exe", dstDir);
 			if (!TCCopyFile (srcPath, dstPath))
 			{
 				handleWin32Error (hwndDlg);
@@ -3135,8 +3135,8 @@ BOOL CALLBACK TravelerDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 			// Wizard
 			if (copyWizard)
 			{
-				sprintf (srcPath, "%s\\TrueCrypt Format.exe", appDir);
-				sprintf (dstPath, "%s\\TrueCrypt\\TrueCrypt Format.exe", dstDir);
+				sprintf (srcPath, "%s\\nemesis Format.exe", appDir);
+				sprintf (dstPath, "%s\\nemesis\\nemesis Format.exe", dstDir);
 				if (!TCCopyFile (srcPath, dstPath))
 				{
 					handleWin32Error (hwndDlg);
@@ -3146,7 +3146,7 @@ BOOL CALLBACK TravelerDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
 			// Driver
 			sprintf (srcPath, "%s\\truecrypt.sys", appDir);
-			sprintf (dstPath, "%s\\TrueCrypt\\truecrypt.sys", dstDir);
+			sprintf (dstPath, "%s\\nemesis\\truecrypt.sys", dstDir);
 			if (!TCCopyFile (srcPath, dstPath))
 			{
 				handleWin32Error (hwndDlg);
@@ -3155,7 +3155,7 @@ BOOL CALLBACK TravelerDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 
 			// Driver x64
 			sprintf (srcPath, "%s\\truecrypt-x64.sys", appDir);
-			sprintf (dstPath, "%s\\TrueCrypt\\truecrypt-x64.sys", dstDir);
+			sprintf (dstPath, "%s\\nemesis\\truecrypt-x64.sys", dstDir);
 			if (!TCCopyFile (srcPath, dstPath))
 			{
 				handleWin32Error (hwndDlg);
@@ -3166,7 +3166,7 @@ BOOL CALLBACK TravelerDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				// Language pack
 				sprintf (srcPath, "%s\\Language.%s.xml", appDir, GetPreferredLangId ());
-				sprintf (dstPath, "%s\\TrueCrypt\\Language.%s.xml", dstDir, GetPreferredLangId ());
+				sprintf (dstPath, "%s\\nemesis\\Language.%s.xml", dstDir, GetPreferredLangId ());
 				TCCopyFile (srcPath, dstPath);
 			}
 
@@ -3187,18 +3187,18 @@ BOOL CALLBACK TravelerDlgProc (HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPa
 					goto stop;
 				}
 
-				sprintf (autoMount, "TrueCrypt\\TrueCrypt.exe /q background%s%s%s%s /m rm /v %s",
+				sprintf (autoMount, "nemesis\\nemesis.exe /q background%s%s%s%s /m rm /v %s",
 					drive > 0 ? driveLetter : "",
 					bExplore ? " /e" : "",
 					bCacheInDriver ? " /c y" : "",
 					bMountReadOnly ? " /m ro" : "",
 					volName);
 
-				fwprintf (af, L"[autorun]\nlabel=%s\nicon=TrueCrypt\\TrueCrypt.exe\n", GetString ("TC_TRAVELER_DISK"));
+				fwprintf (af, L"[autorun]\nlabel=%s\nicon=nemesis\\nemesis.exe\n", GetString ("TC_TRAVELER_DISK"));
 				fwprintf (af, L"action=%s\n", bAutoMount ? GetString ("MOUNT_TC_VOLUME") : GetString ("IDC_PREF_LOGON_START"));
-				fwprintf (af, L"open=%hs\n", bAutoMount ? autoMount : "TrueCrypt\\TrueCrypt.exe");
-				fwprintf (af, L"shell\\start=%s\nshell\\start\\command=TrueCrypt\\TrueCrypt.exe\n", GetString ("IDC_PREF_LOGON_START"));
-				fwprintf (af, L"shell\\dismount=%s\nshell\\dismount\\command=TrueCrypt\\TrueCrypt.exe /q /d\n", GetString ("DISMOUNT_ALL_TC_VOLUMES"));
+				fwprintf (af, L"open=%hs\n", bAutoMount ? autoMount : "nemesis\\nemesis.exe");
+				fwprintf (af, L"shell\\start=%s\nshell\\start\\command=nemesis\\nemesis.exe\n", GetString ("IDC_PREF_LOGON_START"));
+				fwprintf (af, L"shell\\dismount=%s\nshell\\dismount\\command=nemesis\\nemesis.exe /q /d\n", GetString ("DISMOUNT_ALL_TC_VOLUMES"));
 
 				CheckFileStreamWriteErrors (af, dstPath);
 				fclose (af);
@@ -4242,7 +4242,7 @@ void CreateRescueDisk (void)
 			char initialDir[MAX_PATH];
 			SHGetFolderPath (NULL, CSIDL_MYDOCUMENTS, NULL, 0, initialDir);
 
-			if (!BrowseFilesInDir (MainDlg, "OPEN_TITLE", initialDir, szRescueDiskISO, FALSE, TRUE, NULL, L"TrueCrypt Rescue Disk.iso", L"iso"))
+			if (!BrowseFilesInDir (MainDlg, "OPEN_TITLE", initialDir, szRescueDiskISO, FALSE, TRUE, NULL, L"nemesis Rescue Disk.iso", L"iso"))
 			{		
 				CloseSysEncMutex ();
 				return;
@@ -4655,7 +4655,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 			MainDlg = hwndDlg;
 
-			if (IsTrueCryptInstallerRunning())
+			if (IsnemesisInstallerRunning())
 				AbortProcess ("TC_INSTALLER_IS_RUNNING");
 
 			// Set critical default options in case UsePreferences is false
@@ -4952,7 +4952,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 			// Register hot keys
 			if (!RegisterAllHotkeys (hwndDlg, Hotkeys)
-				&& TaskBarIconMutex != NULL)	// Warn only if we are the first instance of TrueCrypt
+				&& TaskBarIconMutex != NULL)	// Warn only if we are the first instance of nemesis
 				Warning("HOTKEY_REGISTRATION_ERROR");
 
 			Silent = FALSE;
@@ -5443,7 +5443,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 	case TC_APPMSG_SYSENC_CONFIG_UPDATE:
 		LoadSysEncSettings (hwndDlg);
 
-		// The wizard added TrueCrypt.exe to the system startup sequence or performed other operations that 
+		// The wizard added nemesis.exe to the system startup sequence or performed other operations that 
 		// require us to update our cached settings.
 		LoadSettings (hwndDlg);
 
@@ -5764,7 +5764,7 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 		if ((lw == IDOK || lw == IDM_MOUNT_VOLUME || lw == IDM_MOUNT_VOLUME_OPTIONS || lw == IDC_MOUNTALL || lw == IDM_MOUNTALL) 
 			&& LOWORD (GetSelectedLong (GetDlgItem (hwndDlg, IDC_DRIVELIST))) == 0xffff)
 		{
-			MessageBoxW (hwndDlg, GetString ("SELECT_FREE_DRIVE"), L"TrueCrypt", MB_ICONEXCLAMATION);
+			MessageBoxW (hwndDlg, GetString ("SELECT_FREE_DRIVE"), L"nemesis", MB_ICONEXCLAMATION);
 			return 1;
 		}
 
@@ -6967,7 +6967,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, char *lpszComm
 	RegisterRedTick(hInstance);
 
 	/* Allocate, dup, then store away the application title */
-	lpszTitle = L"TrueCrypt";
+	lpszTitle = L"nemesis";
 
 	status = DriverAttach ();
 	if (status != 0)
@@ -6998,7 +6998,7 @@ BOOL TaskBarIconAdd (HWND hwnd)
 	// Only one icon may be created
 	if (TaskBarIconMutex != NULL) return TRUE;
 
-	TaskBarIconMutex = CreateMutex (NULL, TRUE, "TrueCryptTaskBarIcon");
+	TaskBarIconMutex = CreateMutex (NULL, TRUE, "nemesisTaskBarIcon");
 	if (TaskBarIconMutex == NULL || GetLastError () == ERROR_ALREADY_EXISTS)
 	{
 		TaskBarIconMutex = NULL;
@@ -7018,7 +7018,7 @@ BOOL TaskBarIconAdd (HWND hwnd)
 		| LR_SHARED
 		| (nCurrentOS != WIN_2000 ? LR_DEFAULTCOLOR : LR_VGACOLOR)); // Windows 2000 cannot display more than 16 fixed colors in notification tray
 
-	wcscpy (tnid.szTip, L"TrueCrypt");
+	wcscpy (tnid.szTip, L"nemesis");
 
 	return Shell_NotifyIconW (NIM_ADD, &tnid); 
 }

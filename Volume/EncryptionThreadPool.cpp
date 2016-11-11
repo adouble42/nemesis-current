@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -20,7 +20,7 @@
 #include "Common/Crypto.h"
 #include "EncryptionThreadPool.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	void EncryptionThreadPool::DoWork (WorkType::Enum type, const EncryptionMode *encryptionMode, byte *data, uint64 startUnitNo, uint64 unitCount, size_t sectorSize)
 	{

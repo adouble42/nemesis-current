@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #ifndef TC_HEADER_Common_Volumes
@@ -27,10 +27,10 @@ extern "C" {
 // specifies the minimum program version required to decrypt the system partition/drive
 #define TC_SYSENC_KEYSCOPE_MIN_REQ_PROG_VERSION	0x0700
 
-// Current volume format version (created by TrueCrypt 6.0+)
+// Current volume format version (created by nemesis 6.0+)
 #define TC_VOLUME_FORMAT_VERSION				2
 
-// Version number of volume format created by TrueCrypt 1.0-5.1a
+// Version number of volume format created by nemesis 1.0-5.1a
 #define TC_VOLUME_FORMAT_VERSION_PRE_6_0		1
 
 // Volume header sizes

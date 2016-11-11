@@ -1,5 +1,5 @@
 /* XPM */
-static char * TrueCryptIcon16x16[] = {
+static char * nemesisIcon16x16[] = {
 "16 16 172 2",
 "  	c None",
 ". 	c #000000",

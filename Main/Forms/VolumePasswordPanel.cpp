@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -12,7 +12,7 @@
 #include "VolumePasswordPanel.h"
 #include "SecurityTokenKeyfilesDialog.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	VolumePasswordPanel::VolumePasswordPanel (wxWindow* parent, shared_ptr <VolumePassword> password, shared_ptr <KeyfileList> keyfiles, bool enableCache, bool enablePassword, bool enableKeyfiles, bool enableConfirmation, bool enablePkcs5Prf, const wxString &passwordLabel)
 		: VolumePasswordPanelBase (parent), Keyfiles (new KeyfileList)

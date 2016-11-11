@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #include "TCdefs.h"
@@ -280,7 +280,7 @@ NTSTATUS TCOpenVolume (PDEVICE_OBJECT DeviceObject,
 	{
 		// Try to gain "raw" access to the partition in case there is a live filesystem on it (otherwise, 
 		// the NTFS driver guards hidden sectors and prevents mounting using a backup header e.g. after the user 
-		// accidentally quick-formats a dismounted partition-hosted TrueCrypt volume as NTFS).
+		// accidentally quick-formats a dismounted partition-hosted nemesis volume as NTFS).
 
 		PFILE_OBJECT pfoTmpDeviceFile = NULL;
 
@@ -445,7 +445,7 @@ NTSTATUS TCOpenVolume (PDEVICE_OBJECT DeviceObject,
 			// If FSCTL_ALLOW_EXTENDED_DASD_IO failed and there is a live filesystem on the partition, then the
 			// filesystem driver may report EOF when we are reading hidden sectors (when the filesystem is 
 			// shorter than the partition). This can happen for example after the user quick-formats a dismounted
-			// partition-hosted TrueCrypt volume and then tries to mount the volume using the embedded backup header.
+			// partition-hosted nemesis volume and then tries to mount the volume using the embedded backup header.
 			memset (readBuffer, 0, TC_VOLUME_HEADER_EFFECTIVE_SIZE);
 		}
 

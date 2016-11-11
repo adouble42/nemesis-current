@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #ifdef __cplusplus
@@ -109,7 +109,7 @@ static BOOL HandleDriveListMouseWheelEvent (UINT uMsg, WPARAM wParam, LPARAM lPa
 }
 
 void SetDriverConfigurationFlag (uint32 flag, BOOL state);
-BOOL MountFavoriteVolumes (BOOL systemFavorites = FALSE, BOOL logOnMount = FALSE, BOOL hotKeyMount = FALSE, const TrueCrypt::FavoriteVolume &favoriteVolumeToMount = TrueCrypt::FavoriteVolume());
+BOOL MountFavoriteVolumes (BOOL systemFavorites = FALSE, BOOL logOnMount = FALSE, BOOL hotKeyMount = FALSE, const nemesis::FavoriteVolume &favoriteVolumeToMount = nemesis::FavoriteVolume());
 BOOL GetExecutableImageInformation (const string &path, string &version, string &description, string &companyName, string &productName);
 
 #endif

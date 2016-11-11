@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -16,7 +16,7 @@
 #include "VolumeLayout.h"
 #include "Common/Crypto.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	Volume::Volume ()
 		: HiddenVolumeProtectionTriggered (false),
@@ -275,7 +275,7 @@ namespace TrueCrypt
 
 			if (!partitionInSystemEncryptionScope && GetPath().IsDevice())
 			{
-				// Check if the device contains TrueCrypt Boot Loader
+				// Check if the device contains nemesis Boot Loader
 				try
 				{
 					File driveDevice;
@@ -284,7 +284,7 @@ namespace TrueCrypt
 					Buffer mbr (VolumeFile->GetDeviceSectorSize());
 					driveDevice.ReadAt (mbr, 0);
 
-					// Search for the string "TrueCrypt"
+					// Search for the string "nemesis"
 					size_t nameLen = strlen (TC_APP_NAME);
 					for (size_t i = 0; i < mbr.Size() - nameLen; ++i)
 					{

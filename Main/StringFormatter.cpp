@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -10,7 +10,7 @@
 #include "StringFormatter.h"
 #include "UserInterfaceException.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	StringFormatter::StringFormatter (const wxString &format, StringFormatterArg arg0, StringFormatterArg arg1, StringFormatterArg arg2, StringFormatterArg arg3, StringFormatterArg arg4, StringFormatterArg arg5, StringFormatterArg arg6, StringFormatterArg arg7, StringFormatterArg arg8, StringFormatterArg arg9)
 	{

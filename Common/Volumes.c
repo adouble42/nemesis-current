@@ -4,9 +4,9 @@
  Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
  Agreement for Encryption for the Masses'. Modifications and additions to
  the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 TrueCrypt Developers Association
- and are governed by the TrueCrypt License 3.0 the full text of which is
- contained in the file License.txt included in TrueCrypt binary and source
+ of this file are Copyright (c) 2003-2010 nemesis Developers Association
+ and are governed by the nemesis License 3.0 the full text of which is
+ contained in the file License.txt included in nemesis binary and source
  code distribution packages. */
 
 #include "Tcdefs.h"
@@ -34,7 +34,7 @@
 #include "Pkcs5.h"
 
 
-/* Volume header v5 structure (used since TrueCrypt 7.0): */
+/* Volume header v5 structure (used since nemesis 7.0): */
 //
 // Offset	Length	Description
 // ------------------------------------------
@@ -57,7 +57,7 @@
 // 256		256		Concatenated primary master key(s) and secondary master key(s) (XTS mode)
 
 
-/* Deprecated/legacy volume header v4 structure (used by TrueCrypt 6.x): */
+/* Deprecated/legacy volume header v4 structure (used by nemesis 6.x): */
 //
 // Offset	Length	Description
 // ------------------------------------------
@@ -79,7 +79,7 @@
 // 256		256		Concatenated primary master key(s) and secondary master key(s) (XTS mode)
 
 
-/* Deprecated/legacy volume header v3 structure (used by TrueCrypt 5.x): */
+/* Deprecated/legacy volume header v3 structure (used by nemesis 5.x): */
 //
 // Offset	Length	Description
 // ------------------------------------------
@@ -100,7 +100,7 @@
 // 256		256		Concatenated primary master key(s) and secondary master key(s) (XTS mode)
 
 
-/* Deprecated/legacy volume header v2 structure (used before TrueCrypt 5.0): */
+/* Deprecated/legacy volume header v2 structure (used before nemesis 5.0): */
 //
 // Offset	Length	Description
 // ------------------------------------------
@@ -715,7 +715,7 @@ int CreateVolumeHeaderInMemory (BOOL bBoot, char *header, int ea, int mode, Pass
 
 	if (masterKeydata == NULL)
 	{
-		// We have no master key data (creating a new volume) so we'll use the TrueCrypt RNG to generate them
+		// We have no master key data (creating a new volume) so we'll use the nemesis RNG to generate them
 
 		int bytesNeeded;
 

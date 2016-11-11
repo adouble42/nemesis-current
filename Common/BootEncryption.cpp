@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -32,7 +32,7 @@
 #include "Mount/MainCom.h"
 #endif
 
-namespace TrueCrypt
+namespace nemesis
 {
 #if !defined (SETUP)
 
@@ -199,18 +199,18 @@ namespace TrueCrypt
 		}
 		
 #if defined (TCMOUNT)
-		static ITrueCryptMainCom *ElevatedComInstance;
+		static InemesisMainCom *ElevatedComInstance;
 #elif defined (VOLFORMAT)
-		static ITrueCryptFormatCom *ElevatedComInstance;
+		static InemesisFormatCom *ElevatedComInstance;
 #endif
 		static DWORD ElevatedComInstanceThreadId;
 		static int ReferenceCount;
 	};
 
 #if defined (TCMOUNT)
-	ITrueCryptMainCom *Elevator::ElevatedComInstance;
+	InemesisMainCom *Elevator::ElevatedComInstance;
 #elif defined (VOLFORMAT)
-	ITrueCryptFormatCom *Elevator::ElevatedComInstance;
+	InemesisFormatCom *Elevator::ElevatedComInstance;
 #endif
 	DWORD Elevator::ElevatedComInstanceThreadId;
 	int Elevator::ReferenceCount = 0;
@@ -1396,7 +1396,7 @@ namespace TrueCrypt
 
 		// Primary volume descriptor
 		strcpy ((char *)image + 0x8000, "\001CD001\001");
-		strcpy ((char *)image + 0x7fff + 41, "TrueCrypt Rescue Disk           ");
+		strcpy ((char *)image + 0x7fff + 41, "nemesis Rescue Disk           ");
 		*(uint32 *) (image + 0x7fff + 81) = RescueIsoImageSize / 2048;
 		*(uint32 *) (image + 0x7fff + 85) = BE32 (RescueIsoImageSize / 2048);
 		image[0x7fff + 121] = 1;
@@ -1458,7 +1458,7 @@ namespace TrueCrypt
 		image[0xc820 + 6] = 1;
 		image[0xc820 + 8] = TC_CD_BOOT_LOADER_SECTOR;
 
-		// TrueCrypt Boot Loader
+		// nemesis Boot Loader
 		CreateBootLoaderInMemory (image + TC_CD_BOOTSECTOR_OFFSET, TC_BOOT_LOADER_AREA_SIZE, true);
 
 		// Volume header
@@ -1633,7 +1633,7 @@ namespace TrueCrypt
 		device.SeekAt (0);
 		device.Read (bootLoaderBuf, sizeof (bootLoaderBuf));
 
-		// Prevent TrueCrypt loader from being backed up
+		// Prevent nemesis loader from being backed up
 		for (size_t i = 0; i < sizeof (bootLoaderBuf) - strlen (TC_APP_NAME); ++i)
 		{
 			if (memcmp (bootLoaderBuf + i, TC_APP_NAME, strlen (TC_APP_NAME)) == 0)
@@ -1819,7 +1819,7 @@ namespace TrueCrypt
 			throw_sys_if (!service);
 
 			SERVICE_DESCRIPTION description;
-			description.lpDescription = "Mounts TrueCrypt system favorite volumes.";
+			description.lpDescription = "Mounts nemesis system favorite volumes.";
 			ChangeServiceConfig2 (service, SERVICE_CONFIG_DESCRIPTION, &description);
 
 			CloseServiceHandle (service);

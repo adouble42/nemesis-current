@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -27,7 +27,7 @@
 
 #include "FatalErrorHandler.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	static terminate_handler DefaultTerminateHandler;
 
@@ -70,9 +70,9 @@ namespace TrueCrypt
 		url.Replace (L"=0X0x", L"=0x");
 		url.Replace (L"=0X", L"=0x");
 
-		wxString msg = L"A critical error has occurred and TrueCrypt must be terminated. If this is caused by a bug in TrueCrypt, we would like to fix it. To help us, you can send us an automatically generated error report containing the following items:\n\n- Program version\n- Operating system version\n- Hardware architecture\n- Checksum of TrueCrypt executable\n- Error category\n- Error address\n";
+		wxString msg = L"A critical error has occurred and nemesis must be terminated. If this is caused by a bug in nemesis, we would like to fix it. To help us, you can send us an automatically generated error report containing the following items:\n\n- Program version\n- Operating system version\n- Hardware architecture\n- Checksum of nemesis executable\n- Error category\n- Error address\n";
 #if wxUSE_STACKWALKER == 1
-		msg += L"- TrueCrypt call stack\n";
+		msg += L"- nemesis call stack\n";
 #endif
 		msg += L"\nIf you select 'Yes', the following URL (which contains the entire error report) will be opened in your default Internet browser.\n\n";
 
@@ -192,11 +192,11 @@ namespace TrueCrypt
 			wxString vars;
 
 			wxString exName = StringConverter::ToWide (StringConverter::GetTypeName (typeid (e)));
-			if (exName.find (L"TrueCrypt::") != string::npos)
+			if (exName.find (L"nemesis::") != string::npos)
 				exName = exName.Mid (11);
 
 			wxString exPos = StringConverter::ToWide (e.what());
-			if (exPos.find (L"TrueCrypt::") != string::npos)
+			if (exPos.find (L"nemesis::") != string::npos)
 				exPos = exPos.Mid (11);
 
 			vars << L"cpus=" << wxThread::GetCPUCount();
@@ -213,9 +213,9 @@ namespace TrueCrypt
 			url.Replace (L"=0X0x", L"=0x");
 			url.Replace (L"=0X", L"=0x");
 
-			wxString msg = L"An unhandled exception has occurred and TrueCrypt must be terminated. If this is caused by a bug in TrueCrypt, we would like to fix it. To help us, you can send us an automatically generated error report containing the following items:\n\n- Program version\n- Operating system version\n- Hardware architecture\n- Checksum of TrueCrypt executable\n- Error description\n- Error location\n";
+			wxString msg = L"An unhandled exception has occurred and nemesis must be terminated. If this is caused by a bug in nemesis, we would like to fix it. To help us, you can send us an automatically generated error report containing the following items:\n\n- Program version\n- Operating system version\n- Hardware architecture\n- Checksum of nemesis executable\n- Error description\n- Error location\n";
 #if wxUSE_STACKWALKER == 1
-			msg += L"- TrueCrypt call stack\n";
+			msg += L"- nemesis call stack\n";
 #endif
 			msg += L"\nIf you select 'Yes', the following URL (which contains the entire error report) will be opened in your default Internet browser.\n\n";
 

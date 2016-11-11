@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2005-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2005-2010 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -209,23 +209,23 @@ char *XmlQuoteText (const char *textSrc, char *textDst, int textDstMaxSize)
 
 int XmlWriteHeader (FILE *file)
 {
-	return fputs ("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<TrueCrypt>", file);
+	return fputs ("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<nemesis>", file);
 }
 
 
 int XmlWriteHeaderW (FILE *file)
 {
-	return fputws (L"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<TrueCrypt>", file);
+	return fputws (L"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<nemesis>", file);
 }
 
 
 int XmlWriteFooter (FILE *file)
 {
-	return fputs ("\n</TrueCrypt>", file);
+	return fputs ("\n</nemesis>", file);
 }
 
 
 int XmlWriteFooterW (FILE *file)
 {
-	return fputws (L"\n</TrueCrypt>", file);
+	return fputws (L"\n</nemesis>", file);
 }

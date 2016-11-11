@@ -30,7 +30,7 @@
  stored in memory.
 */
 
-/* Adapted for TrueCrypt */
+/* Adapted for nemesis */
 
 #include <string.h>     /* for memcpy() etc.        */
 #include <stdlib.h>     /* for _lrotl with VC++     */

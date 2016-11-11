@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2009 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2009 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -13,7 +13,7 @@
 #include "Main/Resources.h"
 #include "AboutDialog.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	AboutDialog::AboutDialog (wxWindow* parent) : AboutDialogBase (parent)
 	{
@@ -52,7 +52,7 @@ namespace TrueCrypt
 			L"Paulo Barreto, Brian Gladman, Wei Dai, Peter Gutmann, and many others.\n\n"
 
 			L"Portions of this software:\n"
-			L"Copyright \xA9 2003-2012 TrueCrypt Developers Association. All Rights Reserved.\n"
+			L"Copyright \xA9 2003-2012 nemesis Developers Association. All Rights Reserved.\n"
 			L"Copyright \xA9 1998-2000 Paul Le Roux. All Rights Reserved.\n"
 			L"Copyright \xA9 1998-2008 Brian Gladman. All Rights Reserved.\n"
 

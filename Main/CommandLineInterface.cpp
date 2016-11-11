@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008-2010 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008-2010 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -15,7 +15,7 @@
 #include "LanguageStrings.h"
 #include "UserInterfaceException.h"
 
-namespace TrueCrypt
+namespace nemesis
 {
 	CommandLineInterface::CommandLineInterface (wxCmdLineParser &parser, UserInterfaceType::Enum interfaceType) :
 		ArgCommand (CommandId::None),
@@ -55,7 +55,7 @@ namespace TrueCrypt
 		parser.AddSwitch (L"",	L"list-token-keyfiles",	_("List security token keyfiles"));
 		parser.AddSwitch (L"",	L"load-preferences",	_("Load user preferences"));
 		parser.AddSwitch (L"",	L"mount",				_("Mount volume interactively"));
-		parser.AddOption (L"m", L"mount-options",		_("TrueCrypt volume mount options"));
+		parser.AddOption (L"m", L"mount-options",		_("nemesis volume mount options"));
 		parser.AddOption (L"",	L"new-keyfiles",		_("New keyfiles"));
 		parser.AddOption (L"",	L"new-password",		_("New password"));
 		parser.AddSwitch (L"",	L"non-interactive",		_("Do not interact with user"));

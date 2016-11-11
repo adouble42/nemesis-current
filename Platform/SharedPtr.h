@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2008 TrueCrypt Developers Association. All rights reserved.
+ Copyright (c) 2008 nemesis Developers Association. All rights reserved.
 
- Governed by the TrueCrypt License 3.0 the full text of which is contained in
- the file License.txt included in TrueCrypt binary and source code distribution
+ Governed by the nemesis License 3.0 the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
  packages.
 */
 
@@ -14,7 +14,7 @@
 
 #ifdef nullptr
 
-namespace TrueCrypt
+namespace nemesis
 {
 	template <class T>
 	class SharedPtr 
@@ -135,7 +135,7 @@ namespace TrueCrypt
 #ifdef shared_ptr
 #undef shared_ptr
 #endif
-#define shared_ptr TrueCrypt::SharedPtr
+#define shared_ptr nemesis::SharedPtr
 
 #ifdef make_shared
 #undef make_shared
@@ -151,7 +151,7 @@ namespace TrueCrypt
 		return shared_ptr <T> (new T (arg));
 	}
 
-#define make_shared TrueCrypt::make_shared
+#define make_shared nemesis::make_shared
 
 }
 
