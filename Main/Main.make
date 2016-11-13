@@ -113,7 +113,11 @@ $(APPNAME): $(LIBS) $(OBJS)
 ifeq "$(PLATFORM)" "MacOSX"
 		$(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS) -stdlib=libstdc++
 else
+ifeq "$(PLATFORM)" "Linux"
+	        $(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS) -ldl
+else
 	        $(CXX) -o $(APPNAME) $(LFLAGS) $(OBJS) $(LIBS) $(FUSE_LIBS) $(WX_LIBS)
+endif
 endif
 endif
 
