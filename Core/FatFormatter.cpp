@@ -1,13 +1,13 @@
 /*
- Legal Notice: Some portions of the source code contained in this file were
- derived from the source code of Encryption for the Masses 2.02a, which is
- Copyright (c) 1998-2000 Paul Le Roux and which is governed by the 'License
- Agreement for Encryption for the Masses'. Modifications and additions to
- the original source code (contained in this file) and all other portions
- of this file are Copyright (c) 2003-2010 nemesis Developers Association
- and are governed by the nemesis License 3.0 the full text of which is
- contained in the file License.txt included in nemesis binary and source
- code distribution packages. */
+ Copyright (c) 2016 nemesis project/mrn@sdf.org. All rights reserved.
+ http://mrn.sixbit.org/
+
+ Governed by the BSD 2 Clause license, the full text of which is contained in
+ the file License.txt included in nemesis binary and source code distribution
+ packages.
+ Based on TrueCrypt 7.1a, which was governed by the TrueCrypt license, which
+ is also made available with nemesis.
+*/
 
 #include "Common/Tcdefs.h"
 #include "Platform/Platform.h"
