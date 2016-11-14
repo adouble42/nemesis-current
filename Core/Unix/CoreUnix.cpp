@@ -550,6 +550,23 @@ namespace nemesis
 					remove (mountPoint.c_str());
 				throw;
 			}
+
+#ifdef TC_LINUX			
+			// set again correct ownership of the mount point to avoid any issues
+			// thanks to veracrypt for this useful bit
+			if (!options.NoFilesystem && options.MountPoint)
+			{
+				mountPoint = *options.MountPoint;
+
+				if (mountPoint.find (GetDefaultMountPointPrefix()) == 0)
+				{
+					try
+					{
+						chown (mountPoint.c_str(), GetRealUserId(), GetRealGroupId());
+					} catch (...) { }
+				}
+			}
+#endif
 		}
 		catch (...)
 		{
