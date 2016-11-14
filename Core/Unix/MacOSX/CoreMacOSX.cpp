@@ -130,33 +130,18 @@ namespace nemesis
 //		if (fuseVersionMajor < 1 || (fuseVersionMajor == 1 && fuseVersionMinor < 3))
 //			throw HigherFuseVersionRequired (SRC_POS);
 
-		// Mount volume image
+		// Attach volume image, do not mount with hdiutil
 		string volImage = string (auxMountPoint) + FuseService::GetVolumeImagePath();
 
 		list <string> args;
+		list <string> du_args;
 		args.push_back ("attach");
 		args.push_back ("-plist");
 		args.push_back ("-noautofsck");
 		args.push_back ("-imagekey");
 		args.push_back ("diskimage-class=CRawDiskImage");
 		args.push_back (volImage);
-
-				if (!options.NoFilesystem && options.MountPoint && !options.MountPoint->IsEmpty())
-		{
-			// Let the system specify mount point except when the user specified a non-default one
-			if (string (*options.MountPoint).find (GetDefaultMountPointPrefix()) != 0)
-			{
-			        args.push_back ("-mount");
-			        args.push_back ("required");
-				args.push_back ("-mountpoint");
-				args.push_back (*options.MountPoint);
-			}
-					}
-			if (options.NoFilesystem) {
-				args.push_back ("-nomount");
-			}
-		if (options.Protection == VolumeProtection::ReadOnly)
-			args.push_back ("-readonly");
+		args.push_back ("-nomount");
 
 		std::string xml;
 		
@@ -164,7 +149,6 @@ namespace nemesis
 		{
 			try
 			{
-       			  printf("prcocessing\n");
 				xml = Process::Execute ("hdiutil", args);
 				break;
 			}
@@ -192,16 +176,43 @@ namespace nemesis
 		size_t e = xml.find ("</string>", p);
 		if (e == string::npos)
 			throw ParameterIncorrect (SRC_POS);
-		printf("stringconverter\n");
 		DevicePath virtualDev = StringConverter::Trim (xml.substr (p, e - p));
 		cout << "virtualDev: " << StringConverter::Trim (xml.substr (p, e - p));
+		// If we're going to mount, do it with diskutil, in order to properly pass options to /Library/Filesystems utility.
+		// This fixes mounting fuse-ext2 with read only flags. hdiutil with readonly flags, gives error 252 from probe
+		// side effect may be, needing to dismount manually from application or terminal if no filesystem detected
+		// will consider adding check to handle this condition and detach automatically
+		// in order to mount fuse-ext2 respecting rw/ro status you must have adouble42 fork of fuse-ext2 installed
+		// the /Library/Filesystems utility has been modified to respect the diskutil flag "rdonly" and otherwise return a
+		// rw mount, in order not to break hdiutil automounts completely
+		if (!options.NoFilesystem) {
+		  du_args.push_back("mount");
+		  if (options.Protection == VolumeProtection::ReadOnly)
+		    du_args.push_back("readOnly");
+		  if (options.MountPoint && !options.MountPoint->IsEmpty())
+		    {
+		      if (string (*options.MountPoint).find (GetDefaultMountPointPrefix()) != 0)
+			{
+			  du_args.push_back("-mountPoint");
+			  du_args.push_back (*options.MountPoint);
+		        }
+		    }
+		  du_args.push_back(virtualDev);
+		  try
+		    {
+		        Process::Execute ("diskutil", du_args);
+		    }
+		  catch (ExecutedProcessFailed&)
+		    {
+		      throw;
+		    }
+		}
 		try
 		{
 			FuseService::SendAuxDeviceInfo (auxMountPoint, virtualDev);
 		}
 		catch (...)
 		{
-			printf("survived fuseservice\n");
 		        try
 			{
 				list <string> args;
