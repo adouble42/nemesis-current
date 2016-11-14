@@ -426,6 +426,7 @@ namespace nemesis
 #endif
 #ifdef TC_MACOSX
 				case VolumeCreationOptions::FilesystemType::Ext3:		fsFormatter = "/opt/gnu/sbin/mkfs.ext3"; break;
+				case VolumeCreationOptions::FilesystemType::exFAT:	fsFormatter = "newfs_exfat"; break;
 #endif
 				case VolumeCreationOptions::FilesystemType::Ext4:		fsFormatter = "mkfs.ext4"; break;
 				case VolumeCreationOptions::FilesystemType::MacOsExt:	fsFormatter = "newfs_hfs"; break;

@@ -36,6 +36,7 @@ namespace nemesis
 #elif defined (TC_MACOSX)
 		FilesystemTypeChoice->Append (L"Mac OS Extended",	(void *) VolumeCreationOptions::FilesystemType::MacOsExt);
 		FilesystemTypeChoice->Append (L"Linux Ext3",		(void *) VolumeCreationOptions::FilesystemType::Ext3);
+		FilesystemTypeChoice->Append (L"exFAT",		        (void *) VolumeCreationOptions::FilesystemType::exFAT);
 #elif defined (TC_FREEBSD) || defined (TC_SOLARIS)
 //		FilesystemTypeChoice->Append (L"UFS",				(void *) VolumeCreationOptions::FilesystemType::UFS);
 //		FilesystemTypeChoice->Append (L"Linux Ext2",		(void *) VolumeCreationOptions::FilesystemType::Ext2);
@@ -78,6 +79,7 @@ namespace nemesis
 		case VolumeCreationOptions::FilesystemType::NTFS:		FilesystemTypeChoice->SetStringSelection (L"NTFS"); break;
 		case VolumeCreationOptions::FilesystemType::Ext2:		FilesystemTypeChoice->SetStringSelection (L"Linux Ext2"); break;
 		case VolumeCreationOptions::FilesystemType::Ext3:		FilesystemTypeChoice->SetStringSelection (L"Linux Ext3"); break;
+		case VolumeCreationOptions::FilesystemType::exFAT:		FilesystemTypeChoice->SetStringSelection (L"exFAT"); break;
 		case VolumeCreationOptions::FilesystemType::Ext4:		FilesystemTypeChoice->SetStringSelection (L"Linux Ext4"); break;
 		case VolumeCreationOptions::FilesystemType::MacOsExt:	FilesystemTypeChoice->SetStringSelection (L"Mac OS Extended"); break;
 		case VolumeCreationOptions::FilesystemType::UFS:		FilesystemTypeChoice->SetStringSelection (L"UFS"); break;
