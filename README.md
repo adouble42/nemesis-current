@@ -6,7 +6,7 @@ more news- starting with this release right now, and an upcoming binary .deb, su
 no more dicking around with makefiles or wxwidgets, it finally is at a point of it just builds.<br>
 see right here, it mounts that on a loop no problem.that's what we need. also, see what i meant about wx 3.1.0 kicking ass? it looks much better at higher res, though. this is my scrunched virtual environment.<br>
 ![screen shot 2016-11-10 at 12 32 22 pm](https://cloud.githubusercontent.com/assets/22229007/20188149/5ca4ce56-a745-11e6-8474-8209d4badc04.png)<br>
-while you're building that or waiting for the binary .deb which is certainly en route, here, still fresh and new- the os x binary initial release:<br>
+while you're building that or waiting for the binary .deb which is certainly en route, here, still somewhat fresh- the os x binary initial release:<br>
 <center>BLAKE512SUM of <b>http://mrn.sixbit.org/files/nemesis_667_fuse_bundle.dmg</b>: <i>fe9ef6a1a755b2be225e28e4b520a3bc2cab731e338dac4ff7d7b197b5ae9dc2eee8896ed91c77f5bd3e8893b7ec53e6098dd6a9355a277842d3e3e30d2a1d81</i></center><br>
 BLAKE hash utilities - <b>http://mrn.sixbit.org/files/BLAKE.tgz</b>
 <br><br>
