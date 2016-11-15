@@ -10,6 +10,7 @@
 */
 
 #include <fstream>
+#include <iostream>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/param.h>
@@ -184,22 +185,34 @@ namespace nemesis
 
 	void CoreFreeBSD::MountFilesystem (const DevicePath &devicePath, const DirectoryPath &mountPoint, const string &filesystemType, bool readOnly, const string &systemMountOptions) const
 	{
-		try
-		{
-			// Try to mount ext3/ext2 by default as mount is unable to probe filesystem type on BSD
-			// UFS doesn't work, FAT is deprecated. this will allow mounting ext3 format via the ext2fs kmod
+
+		  list <string> args;
+		  
+		  args.push_back(devicePath); // first attempt to autodetect FreeBSD native fstypes using fstyp
+		  try {
+		    string detect_fs = StringConverter::Trim (Process::Execute ("fstyp", args));
+		    if (detect_fs.find("not recognized") == string::npos)
+		      {
+			try {
+			  CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? detect_fs : filesystemType, readOnly, systemMountOptions);
+			} catch (ExecutedProcessFailed&) {
+			  if (!filesystemType.empty())
+			    throw;
+			}
+		      }
+		  } catch (...) { // fstyp only exists on FreeBSD 11+ base installs so fall back to old method
+		    try
+		      {
 			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? "ext2fs" : filesystemType, readOnly, systemMountOptions);
-		}
-		catch (ExecutedProcessFailed&)
-		{
+		      } catch (ExecutedProcessFailed&)
+		      {
 			// maybe we have a container here so try FAT before failing
 			CoreUnix::MountFilesystem (devicePath, mountPoint, filesystemType.empty() ? "msdos" : filesystemType, readOnly, systemMountOptions);
 			if (!filesystemType.empty())
-				throw;
-		  
-		}
+				throw;		  
+		      }	  
+		  }
 	}
-
 #ifdef TC_FREEBSD
 	auto_ptr <CoreBase> Core (new CoreServiceProxy <CoreFreeBSD>);
 	auto_ptr <CoreBase> CoreDirect (new CoreFreeBSD);
