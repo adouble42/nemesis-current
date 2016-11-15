@@ -478,22 +478,13 @@ namespace nemesis
 
 					// Create filesystem
 					list <string> args;
-					list <string> du_args;
 
-					if (SelectedFilesystemType == VolumeCreationOptions::FilesystemType::MacOsExt && VolumeSize >= 10 * BYTES_PER_MB)
-						args.push_back ("-J");
+					//					if (SelectedFilesystemType == VolumeCreationOptions::FilesystemType::MacOsExt && VolumeSize >= 10 * BYTES_PER_MB)
+					//						args.push_back ("-J");
 
 					args.push_back (string (virtualDevice));
 
 					Process::Execute (fsFormatter, args);
-#ifdef TC_MACOSX // disable HFS+ journal for better crossplatform support. example, linux will not write HFS+ with journal enabled
-					if (SelectedFilesystemType == VolumeCreationOptions::FilesystemType::MacOsExt) {
-					  du_args.push_back ("disableJournal");
-					  du_args.push_back ("force");
-					  du_args.push_back (string (virtualDevice));
-					  Process::Execute ("diskutil", du_args);
-					}
-#endif					
 				}
 #endif // TC_UNIX
 
