@@ -421,11 +421,8 @@ namespace nemesis
 				switch (SelectedFilesystemType)
 				{
 				case VolumeCreationOptions::FilesystemType::Ext2:		fsFormatter = "mkfs.ext2"; break;
-#ifndef TC_MACOSX
 				case VolumeCreationOptions::FilesystemType::Ext3:		fsFormatter = "mkfs.ext3"; break;
-#endif
 #ifdef TC_MACOSX
-				case VolumeCreationOptions::FilesystemType::Ext3:		fsFormatter = "/opt/gnu/sbin/mkfs.ext3"; break;
 				case VolumeCreationOptions::FilesystemType::exFAT:	fsFormatter = "newfs_exfat"; break;
 #endif
 				case VolumeCreationOptions::FilesystemType::Ext4:		fsFormatter = "mkfs.ext4"; break;

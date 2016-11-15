@@ -28,7 +28,7 @@ int main (int argc, char **argv)
 	try
 	{
 		// Make sure all required commands can be executed via default search path
-		string sysPathStr = "/usr/sbin:/sbin:/usr/bin:/bin";
+		string sysPathStr = "/usr/sbin:/sbin:/usr/bin:/bin:/usr/local/bin:/usr/local/sbin:/opt/gnu/bin:/opt/gnu/sbin";
 		
 		char *sysPath = getenv ("PATH");
 		if (sysPath)
