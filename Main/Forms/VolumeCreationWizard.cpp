@@ -479,8 +479,8 @@ namespace nemesis
 					// Create filesystem
 					list <string> args;
 
-					//					if (SelectedFilesystemType == VolumeCreationOptions::FilesystemType::MacOsExt && VolumeSize >= 10 * BYTES_PER_MB)
-					//						args.push_back ("-J");
+					if (SelectedFilesystemType == VolumeCreationOptions::FilesystemType::MacOsExt && VolumeSize >= 10 * BYTES_PER_MB)
+						args.push_back ("-J");
 
 					args.push_back (string (virtualDevice));
 
