@@ -148,15 +148,15 @@ namespace nemesis
 	{
 		FreezeScope freeze (this);
 
-#ifdef TC_WINDOWS
-		FilesystemSizer->Show (false);
-#else
-		FilesystemOptionsSizer->Show (!NoFilesystemCheckBox->IsChecked());
+		//#ifdef TC_WINDOWS
+		//		FilesystemSizer->Show (false);
+		//#else
+       		FilesystemOptionsSizer->Show (!NoFilesystemCheckBox->IsChecked());
 
-#	ifdef TC_MACOSX
+		  //#ifdef TC_MACOSX
 		FilesystemOptionsStaticText->Show (false);
 		FilesystemOptionsTextCtrl->Show (false);
-#	endif
+		//#endif
 
 		if (!Options.Path || Options.Path->IsEmpty())
 		{
@@ -164,8 +164,8 @@ namespace nemesis
 			MountPointTextCtrl->Show (false);
 			MountPointButton->Show (false);
 		}
-		RemovableCheckBox->Show (false);
-#endif
+		//		RemovableCheckBox->Show (false);
+		//#endif
 		ProtectionSizer->Show (!ReadOnlyCheckBox->IsChecked());
 		ProtectionPasswordPanel->Show (!ReadOnlyCheckBox->IsChecked() && ProtectionCheckBox->IsChecked());
 
