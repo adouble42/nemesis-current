@@ -292,4 +292,4 @@ endif
 	
 	@echo Building wxWidgets library...
 #	cd "$(WX_BUILD_DIR)" && $(MAKE)
-	cd "$(WX_BUILD_DIR)" && $(MAKE) -j16
+	cd "$(WX_BUILD_DIR)" && $(MAKE) -j6

@@ -49,12 +49,18 @@ namespace nemesis
 				try
 				{
 					int argIndex = 0;
+					string argsCopy[array_capacity (args)];
 					if (!execFunctor)
-						args[argIndex++] = const_cast <char*> (processName.c_str());
-
+					{
+						argsCopy[argIndex++] = processName;
+					}
 					foreach (const string &arg, arguments)
 					{
-						args[argIndex++] = const_cast <char*> (arg.c_str());
+						argsCopy[argIndex++] = arg;
+					}
+					for (int i = 0; i < argIndex; i++)
+					{
+						args[i] = const_cast <char*> (argsCopy[i].c_str());
 					}
 					args[argIndex] = nullptr;
 
